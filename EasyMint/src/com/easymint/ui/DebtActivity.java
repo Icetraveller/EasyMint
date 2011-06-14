@@ -201,7 +201,6 @@ public class DebtActivity extends BaseMultiPaneActivity  {
 				public void onClick(View v) {
 					int Oclear = 0;
 					String preString = "";
-					
 					if(iView.getVisibility()==View.INVISIBLE){
 						Oclear = 1;
 						preString=getString(R.string.description_clear);

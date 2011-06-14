@@ -133,8 +133,14 @@ public class BudgetActivity extends BaseMultiPaneActivity {
 
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
+			
+			int mYear;
+		    int mMonth;
+		    int mDay;
+		    int mHour;
+		    int mMinute;
 
-			TextView date = (TextView) view.findViewById(R.id.date);
+			TextView dateTextView = (TextView) view.findViewById(R.id.date);
 
 			TextView budget = (TextView) view.findViewById(R.id.budget);
 
@@ -150,7 +156,23 @@ public class BudgetActivity extends BaseMultiPaneActivity {
 
 			String dateString = cursor.getString(cursor
 					.getColumnIndexOrThrow(MintDBHelper.KEY_CYCLE));
-			date.setText(dateString);
+			
+			String[] dateStrings = dateString.split(" ");
+			
+			
+			String[] datepiece = dateStrings[0].split("-");
+			mMonth=Integer.parseInt(datepiece[0])-1;
+			mDay=Integer.parseInt(datepiece[1]);
+			mYear=Integer.parseInt(datepiece[2]);
+			
+			String[] timepiece = dateStrings[1].split(":");
+			mHour = Integer.parseInt(timepiece[0]);
+			mMinute = Integer.parseInt(timepiece[1]);
+			final Calendar c = Calendar.getInstance();
+			c.set(mYear, mMonth, mDay, mHour, mMinute);
+			dateTextView.setText(String.format("  %tB %te %tY %tH:%02d", c,c,c,c,mMinute));
+			
+			dateTextView.setText(dateString);
  
 			float budgetString = cursor.getFloat(cursor
 					.getColumnIndexOrThrow(MintDBHelper.KEY_BUDGET));

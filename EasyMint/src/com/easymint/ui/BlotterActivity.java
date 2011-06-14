@@ -154,6 +154,12 @@ public class BlotterActivity extends BaseMultiPaneActivity{
 
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
+			
+			int mYear;
+		    int mMonth;
+		    int mDay;
+		    int mHour;
+		    int mMinute;
 			/**
 			 * @indicator : weight in budget
 			 * @statusImageView : status of income or expense
@@ -204,6 +210,23 @@ public class BlotterActivity extends BaseMultiPaneActivity{
 			
 			//setup date
 			String dateString = cursor.getString(cursor.getColumnIndexOrThrow(MintDBHelper.KEY_DATE));
+			
+
+			String[] dateStrings = dateString.split(" ");
+			
+			
+			String[] datepiece = dateStrings[0].split("-");
+			mMonth=Integer.parseInt(datepiece[0])-1;
+			mDay=Integer.parseInt(datepiece[1]);
+			mYear=Integer.parseInt(datepiece[2]);
+			
+			String[] timepiece = dateStrings[1].split(":");
+			mHour = Integer.parseInt(timepiece[0]);
+			mMinute = Integer.parseInt(timepiece[1]);
+			final Calendar c = Calendar.getInstance();
+			c.set(mYear, mMonth, mDay, mHour, mMinute);
+			dateTextView.setText(String.format("  %tB %te %tY %tH:%02d", c,c,c,c,mMinute));
+			
 			dateTextView.setText(dateString);
 			
 			//setup price

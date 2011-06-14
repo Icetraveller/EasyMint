@@ -17,8 +17,6 @@
 
 <resources>
     <!-- Base application theme is the default theme. -->
-    <style name="Theme" parent="android:Theme">
-    </style>
     
 	<drawable name="screen_background_black">#ff000000</drawable>
     <drawable name="translucent_background">#88000000</drawable>

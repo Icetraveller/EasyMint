@@ -127,10 +127,11 @@ public class AddConsumptionActivity extends BaseMultiPaneActivity {
 					boolean isChecked) {
 				if(isChecked){
 					status = 0;
-					Toast.makeText(AddConsumptionActivity.this, R.string.description_alter_expense, Toast.LENGTH_SHORT).show();
+					Toast.makeText(AddConsumptionActivity.this, R.string.description_alter_income, Toast.LENGTH_SHORT).show();
 				}else {
 					status = 1;
-					Toast.makeText(AddConsumptionActivity.this, R.string.description_alter_income, Toast.LENGTH_SHORT).show();
+					Toast.makeText(AddConsumptionActivity.this, R.string.description_alter_expense, Toast.LENGTH_SHORT).show();
+
 				}
 				
 			}});

@@ -249,6 +249,8 @@ containing a value of this type.
         public static final int sandbox_logo_empty=0x7f020082;
         public static final int schedule_indicator_left=0x7f020083;
         public static final int schedule_indicator_right=0x7f020084;
+        /**  Base application theme is the default theme. 
+         */
         public static final int screen_background_black=0x7f0200b0;
         public static final int slider_nosnap=0x7f020085;
         public static final int speaker_image_empty=0x7f020086;
@@ -599,7 +601,6 @@ containing a value of this type.
         public static final int TextHeader3=0x7f0b0016;
         public static final int TextHeaderSub=0x7f0b0014;
         /**  Base application theme is the default theme. 
- Base application theme is the default theme. 
          */
         public static final int Theme=0x7f0b0000;
         /**  Variation on the Light theme that turns off the title 

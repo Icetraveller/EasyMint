@@ -56,8 +56,8 @@
         <item name="android:layout_height">fill_parent</item>
         <item name="android:clickable">false</item>
         <item name="android:scaleType">center</item>
-        <!-- <item name="android:src">@drawable/actionbar_compat_logo</item> -->
-         <item name="android:src">@drawable/logo</item> 
+        <!-- <item name="android:src">@drawable/logo</item> -->
+         <item name="android:src">@drawable/actionbar_compat_logo</item> 
     </style>
 
     <style name="ActionBarCompatText">
