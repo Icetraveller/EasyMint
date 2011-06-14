@@ -28,6 +28,9 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.easymint.R;
 import com.easymint.provider.MintDBHelper;
+import com.easymint.ui.widget.AlternativeDateSlider;
+import com.easymint.ui.widget.DateSlider;
+import com.easymint.ui.widget.TimeSlider;
 
 public class AddConsumptionActivity extends BaseMultiPaneActivity {
 
@@ -227,35 +230,63 @@ private final NumberKeyListener keyListener = new NumberKeyListener() {
 		}
 	};
 
-	protected Dialog onCreateDialog(int id) {   
+	protected Dialog onCreateDialog(int id) {  
+		final Calendar c = Calendar.getInstance();
+		c.set(mYear, mMonth, mDay, mHour, mMinute);
 		switch (id) {   
-		case DATE_DIALOG_ID:    
-			return new DatePickerDialog(this,mDateSetListener,mYear,mMonth,mDay);   
+		case DATE_DIALOG_ID:
+			return new AlternativeDateSlider(this,mDateSetListener,c);
+//			return new DatePickerDialog(this,mDateSetListener,mYear,mMonth,mDay);   
 
-		case TIME_DIALOG_ID:     
-			return new TimePickerDialog(this,mTimeSetListener,mHour,mMinute,false);  
+		case TIME_DIALOG_ID:   
+			return new TimeSlider(this,mTimeSetListener,c);
+//			return new TimePickerDialog(this,mTimeSetListener,mHour,mMinute,false);  
 		}
 		return null;
 	}
 
-	private DatePickerDialog.OnDateSetListener mDateSetListener =new DatePickerDialog.OnDateSetListener() {    
-		public void onDateSet(DatePicker view, int year,int monthOfYear, int dayOfMonth) {        
-			mYear = year;
-			mMonth = monthOfYear;        
-			mDay = dayOfMonth;
-			string_date=String.valueOf(pad(mMonth+1))+"-"+String.valueOf(pad(mDay))+"-"+String.valueOf(mYear);
-			updateDisplayDate();
-		}       
-	};
-
-	private TimePickerDialog.OnTimeSetListener mTimeSetListener =new TimePickerDialog.OnTimeSetListener() {     
-		public void onTimeSet(TimePicker view, int hourOfDay, int minute){   
-			mHour = hourOfDay;         
-			mMinute = minute; 
-			string_time=String.valueOf(mHour)+":"+String.valueOf(mMinute);
-			updateDisplayTime();
-		}  
-	};
+//	private DatePickerDialog.OnDateSetListener mDateSetListener =new DatePickerDialog.OnDateSetListener() {    
+//		public void onDateSet(DatePicker view, int year,int monthOfYear, int dayOfMonth) {        
+//			mYear = year;
+//			mMonth = monthOfYear;        
+//			mDay = dayOfMonth;
+//			string_date=String.valueOf(pad(mMonth+1))+"-"+String.valueOf(pad(mDay))+"-"+String.valueOf(mYear);
+//			updateDisplayDate();
+//		}       
+//	};
+//
+//	private TimePickerDialog.OnTimeSetListener mTimeSetListener =new TimePickerDialog.OnTimeSetListener() {     
+//		public void onTimeSet(TimePicker view, int hourOfDay, int minute){   
+//			mHour = hourOfDay;         
+//			mMinute = minute; 
+//			string_time=String.valueOf(mHour)+":"+String.valueOf(mMinute);
+//			updateDisplayTime();
+//		}  
+//	};
+	
+	// define the listener which is called once a user selected the date.
+    private DateSlider.OnDateSetListener mDateSetListener =
+        new DateSlider.OnDateSetListener() {
+            public void onDateSet(DateSlider view, Calendar selectedDate) {
+            	// update the dateText view with the corresponding date
+            	mYear = selectedDate.get(Calendar.YEAR);
+            	mMonth=selectedDate.get(Calendar.MONTH);
+            	mDay = selectedDate.get(Calendar.DAY_OF_MONTH);
+            	updateDisplayDate();
+//                dateText.setText(String.format("The chosen date:%n%te. %tB %tY", selectedDate, selectedDate, selectedDate));
+            }
+    };
+    
+    private DateSlider.OnDateSetListener mTimeSetListener =
+        new DateSlider.OnDateSetListener() {
+            public void onDateSet(DateSlider view, Calendar selectedDate) {
+            	// update the dateText view with the corresponding date
+            	mHour = selectedDate.get(Calendar.HOUR_OF_DAY);
+              mMinute = selectedDate.get(Calendar.MINUTE);
+              updateDisplayTime();
+//                dateText.setText(String.format("The chosen time:%n%tR", selectedDate));
+            }
+    };
 
 	private void updateDisplayTime() {  
 		timeButton.setText(new StringBuilder().append(pad(mHour)).append(":").append(pad(mMinute)));

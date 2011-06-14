@@ -1,6 +1,10 @@
 package com.easymint.ui;
-
+//hello this is pro
+//hello this is pro
+//hello this is pro
+//hello this is pro
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
@@ -102,6 +106,12 @@ public class DebtActivity extends BaseMultiPaneActivity  {
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
 			
+			int mYear;
+		    int mMonth;
+		    int mDay;
+		    int mHour;
+		    int mMinute;
+			
 			TextView indicator = (TextView) view.findViewById(R.id.indicator);
 			
 			ImageView statusImageView = (ImageView) view.findViewById(R.id.right_top);
@@ -161,7 +171,24 @@ public class DebtActivity extends BaseMultiPaneActivity  {
 			
 			//setup date
 			final String dateString = cursor.getString(cursor.getColumnIndexOrThrow(MintDBHelper.KEY_DATE));
-			dateTextView.setText(dateString);
+			
+			
+			
+			String[] dateStrings = dateString.split(" ");
+			
+			
+			String[] datepiece = dateStrings[0].split("-");
+			mMonth=Integer.parseInt(datepiece[0])-1;
+			mDay=Integer.parseInt(datepiece[1]);
+			mYear=Integer.parseInt(datepiece[2]);
+			
+			String[] timepiece = dateStrings[1].split(":");
+			mHour = Integer.parseInt(timepiece[0]);
+			mMinute = Integer.parseInt(timepiece[1]);
+			final Calendar c = Calendar.getInstance();
+			c.set(mYear, mMonth, mDay, mHour, mMinute);
+			dateTextView.setText(String.format("  %tB %te %tY %tH:%02d", c,c,c,c,mMinute));
+			////
 			
 			final String noteString = cursor.getString(cursor.getColumnIndexOrThrow(MintDBHelper.KEY_NOTES));
 			

@@ -35,6 +35,9 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.easymint.R;
 import com.easymint.provider.MintDBHelper;
+import com.easymint.ui.widget.AlternativeDateSlider;
+import com.easymint.ui.widget.DateSlider;
+import com.easymint.ui.widget.TimeSlider;
 
 public class AddDebtActivity extends BaseMultiPaneActivity{
 	private static final String TAG = "Add Debt Activity";
@@ -349,27 +352,51 @@ private final NumberKeyListener keyListener = new NumberKeyListener() {
 		}
 	};
 	
-	private DatePickerDialog.OnDateSetListener mDateSetListener =
-        new DatePickerDialog.OnDateSetListener() {
-
-            public void onDateSet(DatePicker view, int year, 
-                                  int monthOfYear, int dayOfMonth) {
-                mYear = year;
-                mMonth = monthOfYear;
-                mDay = dayOfMonth;
-                updateDisplayDate();
+//	private DatePickerDialog.OnDateSetListener mDateSetListener =
+//        new DatePickerDialog.OnDateSetListener() {
+//
+//            public void onDateSet(DatePicker view, int year, 
+//                                  int monthOfYear, int dayOfMonth) {
+//                mYear = year;
+//                mMonth = monthOfYear;
+//                mDay = dayOfMonth;
+//                updateDisplayDate();
+//            }
+//        };
+	
+	// define the listener which is called once a user selected the date.
+    private DateSlider.OnDateSetListener mDateSetListener =
+        new DateSlider.OnDateSetListener() {
+            public void onDateSet(DateSlider view, Calendar selectedDate) {
+            	// update the dateText view with the corresponding date
+            	mYear = selectedDate.get(Calendar.YEAR);
+            	mMonth=selectedDate.get(Calendar.MONTH);
+            	mDay = selectedDate.get(Calendar.DAY_OF_MONTH);
+            	updateDisplayDate();
+//                dateText.setText(String.format("The chosen date:%n%te. %tB %tY", selectedDate, selectedDate, selectedDate));
             }
-        };
+    };
+    
+    private DateSlider.OnDateSetListener mTimeSetListener =
+        new DateSlider.OnDateSetListener() {
+            public void onDateSet(DateSlider view, Calendar selectedDate) {
+            	// update the dateText view with the corresponding date
+            	mHour = selectedDate.get(Calendar.HOUR_OF_DAY);
+              mMinute = selectedDate.get(Calendar.MINUTE);
+              updateDisplayTime();
+//                dateText.setText(String.format("The chosen time:%n%tR", selectedDate));
+            }
+    };
         
      // the callback received when the user "sets" the time in the dialog
-        private TimePickerDialog.OnTimeSetListener mTimeSetListener =
-            new TimePickerDialog.OnTimeSetListener() {
-                public void onTimeSet(TimePicker view, int hourOfDay, int minute ) {
-                    mHour = hourOfDay;
-                    mMinute = minute;
-                    updateDisplayTime();
-                }
-            };
+//        private TimePickerDialog.OnTimeSetListener mTimeSetListener =
+//            new TimePickerDialog.OnTimeSetListener() {
+//                public void onTimeSet(TimePicker view, int hourOfDay, int minute ) {
+//                    mHour = hourOfDay;
+//                    mMinute = minute;
+//                    updateDisplayTime();
+//                }
+//            };
         
      // updates the date in the TextView
 	private void updateDisplayDate() {
@@ -409,6 +436,8 @@ private final NumberKeyListener keyListener = new NumberKeyListener() {
 	
 	
 	protected Dialog onCreateDialog(int id) {
+		final Calendar c = Calendar.getInstance();
+		c.set(mYear, mMonth, mDay, mHour, mMinute);
 		switch (id) {
 		case DIALOG_CLEAR:
 			return new AlertDialog.Builder(AddDebtActivity.this)
@@ -430,12 +459,14 @@ private final NumberKeyListener keyListener = new NumberKeyListener() {
             })
            .create();
 		case DIALOG_DATE:
-			return new DatePickerDialog(this,
-                    mDateSetListener,
-                    mYear, mMonth, mDay);
+//			return new DatePickerDialog(this,
+//                    mDateSetListener,
+//                    mYear, mMonth, mDay);
+			 return new AlternativeDateSlider(this,mDateSetListener,c);
 		case DIALOG_TIME:
-			return new TimePickerDialog(this,
-	                mTimeSetListener, mHour, mMinute, false);
+//			return new TimePickerDialog(this,
+//	                mTimeSetListener, mHour, mMinute, false);
+			return new TimeSlider(this,mTimeSetListener,c);
 		case DIALOG_YES_OR_NO:
 			return null;
 		case DIALOG_EXIT:

@@ -8,6 +8,7 @@
     <string name="success">成功</string>
     <string name="and">和</string>
     
+    <string name="dateSliderTitle">选择日期：</string>
     
     <string name="error_price">价格输入有误</string>
     <string name="error_empty_debtor">债务人不能为空</string>

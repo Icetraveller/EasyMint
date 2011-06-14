@@ -4,6 +4,8 @@ import java.util.Calendar;
 
 import com.easymint.R;
 import com.easymint.provider.MintDBHelper;
+import com.easymint.ui.widget.DateSlider;
+import com.easymint.ui.widget.MonthYearDateSlider;
 
 
 import android.app.DatePickerDialog;
@@ -200,22 +202,35 @@ private final NumberKeyListener keyListener = new NumberKeyListener() {
 	};
 
 	protected Dialog onCreateDialog(int id) {   
-		switch (id) {   
+		 final Calendar c = Calendar.getInstance();
+		 c.set(mYear, mMonth, mDay);
+		switch (id) {  
 		case DATE_DIALOG_ID:    
-			return new DatePickerDialog(this,mDateSetListener,mYear,mMonth,mDay);   
+			return new MonthYearDateSlider(this,mMonthYearSetListener,c);
+//			return new DatePickerDialog(this,mDateSetListener,mYear,mMonth,mDay);   
 		}
 		return null;
 	}
-	private DatePickerDialog.OnDateSetListener mDateSetListener =new DatePickerDialog.OnDateSetListener() {    
-		public void onDateSet(DatePicker view, int year,                  
-				int monthOfYear, int dayOfMonth) {        
-			mYear = year;        
-			mMonth = monthOfYear;          
-			mDay = dayOfMonth; 
-			string_time=String.valueOf(pad(mMonth))+"-"+String.valueOf(pad(mDay))+"-"+String.valueOf(mYear);
-			updateDisplay();
-		}       
-	};
+	
+	private DateSlider.OnDateSetListener mMonthYearSetListener =
+        new DateSlider.OnDateSetListener() {
+            public void onDateSet(DateSlider view, Calendar selectedDate) {
+            	// update the dateText view with the corresponding date
+            	mYear = selectedDate.get(Calendar.DAY_OF_YEAR);
+            	mMonth = selectedDate.get(Calendar.MONTH);
+            	updateDisplay();
+            }
+    };
+//	private DatePickerDialog.OnDateSetListener mDateSetListener =new DatePickerDialog.OnDateSetListener() {    
+//		public void onDateSet(DatePicker view, int year,                  
+//				int monthOfYear, int dayOfMonth) {        
+//			mYear = year;        
+//			mMonth = monthOfYear;          
+//			mDay = dayOfMonth; 
+//			string_time=String.valueOf(pad(mMonth))+"-"+String.valueOf(pad(mDay))+"-"+String.valueOf(mYear);
+//			updateDisplay();
+//		}       
+//	};
 	
 	private static String pad(int c) {
 		if (c >= 10)
