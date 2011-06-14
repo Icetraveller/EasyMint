@@ -42,7 +42,7 @@ public class BlotterActivity extends BaseMultiPaneActivity{
 	    protected void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.activity_blotter);
-	        
+	        getActivityHelper().setupActionBar(getTitle(), 0);
 	        sqlString = savedInstanceState != null ? savedInstanceState.getString(START_SQL) 
 					: null;
 	        if (sqlString == null) {
@@ -72,7 +72,7 @@ public class BlotterActivity extends BaseMultiPaneActivity{
 		startManagingCursor(cursor);
 		
 		
-		getActivityHelper().setupActionBar(getTitle(), 0);
+		
 		ListView listView = (ListView) findViewById(R.id.list_blotter);
 
 		BlotterAdapter blotterAdapter = new BlotterAdapter(this, cursor);
@@ -210,7 +210,7 @@ public class BlotterActivity extends BaseMultiPaneActivity{
 			
 			//setup date
 			String dateString = cursor.getString(cursor.getColumnIndexOrThrow(MintDBHelper.KEY_DATE));
-			
+			String budgetDateString ="";
 
 			String[] dateStrings = dateString.split(" ");
 			
@@ -227,7 +227,7 @@ public class BlotterActivity extends BaseMultiPaneActivity{
 			c.set(mYear, mMonth, mDay, mHour, mMinute);
 			dateTextView.setText(String.format("  %tB %te %tY %tH:%02d", c,c,c,c,mMinute));
 			
-			dateTextView.setText(dateString);
+			budgetDateString = pad(mMonth+1)+"-"+mYear;
 			
 			//setup price
 			float price = cursor.getFloat(cursor.getColumnIndexOrThrow(MintDBHelper.KEY_PRICE));
@@ -241,7 +241,7 @@ public class BlotterActivity extends BaseMultiPaneActivity{
 			categoryTextView.setText(typeStrings[consumptionType]);
 			
 			//check has Budget
-			Cursor budgetCursor = mDbHelper.fetchBudgetByTypeandDate(consumptionType,dateString);
+			Cursor budgetCursor = mDbHelper.fetchBudgetByTypeandDate(consumptionType,budgetDateString);
 			startManagingCursor(budgetCursor);
 			
 //			budgetCursor = findMaxBudgetInTime(budgetCursor);
@@ -296,36 +296,13 @@ public class BlotterActivity extends BaseMultiPaneActivity{
 			return mInflater.inflate(R.layout.list_item_blotter, parent, false);
 		}
 		
-//		private Cursor findMaxBudgetInTime(Cursor c){
-//			if(c == null){
-//				return null;
-//			}
-//			startManagingCursor(c);
-//			c.moveToPrevious();
-//			float budgetSum = 0;
-//			String budgetCycle = "";
-//			Calendar start =Calendar.getInstance();
-//			Calendar end =Calendar.getInstance();
-//			Cursor tmpCursor=null;
-//			startManagingCursor(tmpCursor);
-//			
-//			while(c.moveToNext()){
-//				float budgetSum2 = c.getFloat(c.getColumnIndexOrThrow(MintDBHelper.KEY_BUDGET));
-//				budgetCycle = c.getString(c.getColumnIndexOrThrow(MintDBHelper.KEY_CYCLE));
-//				
-//				String[] period = budgetCycle.split("~");
-//				String[] startTime = period[0].split(",");
-//				start.set(Integer.parseInt(startTime[0]),Integer.parseInt(startTime[1]), Integer.parseInt(startTime[2]));
-//				String[] endTime = period[1].split(",");
-//				end.set(Integer.parseInt(endTime[0]),Integer.parseInt(endTime[1]), Integer.parseInt(endTime[2]));
-//				
-//				if(budgetSum2 >= budgetSum && Calendar.getInstance().after(start) && Calendar.getInstance().before(end)){
-//					budgetSum = budgetSum2;
-//					tmpCursor = c;
-//				}
-//			}
-//			return tmpCursor;
-//		}
 		
 	 }
+	 
+	 private static String pad(int c) {
+			if (c >= 10)
+				return String.valueOf(c);
+			else
+				return "0" + String.valueOf(c);
+		}
 }

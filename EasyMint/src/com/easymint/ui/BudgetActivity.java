@@ -162,25 +162,24 @@ public class BudgetActivity extends BaseMultiPaneActivity {
 			
 			String[] datepiece = dateStrings[0].split("-");
 			mMonth=Integer.parseInt(datepiece[0])-1;
-			mDay=Integer.parseInt(datepiece[1]);
-			mYear=Integer.parseInt(datepiece[2]);
+			mYear=Integer.parseInt(datepiece[1]);
 			
-			String[] timepiece = dateStrings[1].split(":");
-			mHour = Integer.parseInt(timepiece[0]);
-			mMinute = Integer.parseInt(timepiece[1]);
 			final Calendar c = Calendar.getInstance();
-			c.set(mYear, mMonth, mDay, mHour, mMinute);
-			dateTextView.setText(String.format("  %tB %te %tY %tH:%02d", c,c,c,c,mMinute));
+			c.set(mYear, mMonth,1);
+			String display = String.format("  %tB %tY - ", c,c);
+			c.add(Calendar.MONTH, 1);
+			display+= String.format("%tB %tY ", c,c);
+			dateTextView.setText(display);
 			
-			dateTextView.setText(dateString);
  
 			float budgetString = cursor.getFloat(cursor
 					.getColumnIndexOrThrow(MintDBHelper.KEY_BUDGET));
 			budget.setText(""+budgetString);
 			
-			String consumption_typeString = cursor.getString(cursor
+			int i = cursor.getInt(cursor
 					.getColumnIndexOrThrow(MintDBHelper.KEY_CONSUMPTION_TYPE));
-			consumption_type.setText(consumption_typeString);
+			String[] consumptionTypeStrings = getResources().getStringArray(R.array.account_type_array);
+			consumption_type.setText(consumptionTypeStrings[i]);
 			
 			float consumptionString = cursor.getFloat(cursor
 					.getColumnIndexOrThrow(MintDBHelper.KEY_OUT));

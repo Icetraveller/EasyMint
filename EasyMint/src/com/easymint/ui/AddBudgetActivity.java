@@ -40,6 +40,8 @@ public class AddBudgetActivity extends BaseMultiPaneActivity {
 	static final int DATE_DIALOG_ID = 0;
 	String string_time;
 	
+	private float out;
+	
 	private Button dateButton;
 	private Button confirmButton;
 	private Button cancelButton;
@@ -75,8 +77,9 @@ public class AddBudgetActivity extends BaseMultiPaneActivity {
 		final Calendar c = Calendar.getInstance();     
 		mYear = c.get(Calendar.YEAR);      
 		mMonth = c.get(Calendar.MONTH);      
-		mDay = c.get(Calendar.DAY_OF_MONTH);        
-		string_time=String.valueOf(mMonth)+"-"+String.valueOf(mDay)+"-"+String.valueOf(mYear);
+		mDay = c.get(Calendar.DAY_OF_MONTH); 
+		c.add(Calendar.MONTH, 1);
+		string_time=String.valueOf(mMonth)+"-"+String.valueOf(mYear)+" "+c.get(Calendar.MONTH)+"-"+c.get(Calendar.YEAR);
 
 		
 		populateFields();
@@ -87,10 +90,10 @@ public class AddBudgetActivity extends BaseMultiPaneActivity {
 	private void findView() {
 		
 		ImageView gongImageView = (ImageView) findViewById(R.id.status);
-		gongImageView.setVisibility(View.INVISIBLE);
+		gongImageView.setVisibility(View.GONE);
 		
 		Button gongButton = (Button) findViewById(R.id.time);
-		gongButton.setVisibility(View.INVISIBLE);
+		gongButton.setVisibility(View.GONE);
 		
 		ToggleButton statusToggleButton =(ToggleButton) findViewById(R.id.toggle);
 		statusToggleButton.setChecked(true);
@@ -129,8 +132,8 @@ public class AddBudgetActivity extends BaseMultiPaneActivity {
 				boolean flag=saveState();
 				if(flag)
 				{
-					setResult(RESULT_OK);
 					finish();
+					setResult(RESULT_OK);
 				}
 			} 
 		});
@@ -216,7 +219,7 @@ private final NumberKeyListener keyListener = new NumberKeyListener() {
         new DateSlider.OnDateSetListener() {
             public void onDateSet(DateSlider view, Calendar selectedDate) {
             	// update the dateText view with the corresponding date
-            	mYear = selectedDate.get(Calendar.DAY_OF_YEAR);
+            	mYear = selectedDate.get(Calendar.YEAR);
             	mMonth = selectedDate.get(Calendar.MONTH);
             	updateDisplay();
             }
@@ -237,10 +240,15 @@ private final NumberKeyListener keyListener = new NumberKeyListener() {
 			return String.valueOf(c);
 		else
 			return "0" + String.valueOf(c);
-		
 	}
 	private void updateDisplay() {  
-		dateButton.setText(new StringBuilder().append(mMonth + 1).append("-").append(mDay).append("-").append(mYear).append(" "));
+		string_time = new StringBuilder().append(pad(mMonth + 1)).append("-").append(mYear).toString();
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(mYear, mMonth, 1);
+		String display = String.format("  %tB %tY - ", calendar,calendar);
+		calendar.add(Calendar.MONTH, 1);
+		display+=String.format("%tB %tY ", calendar,calendar);
+		dateButton.setText(display);
 	}
 	private void populateFields() {
 		if (mRowId != null) {
@@ -264,10 +272,13 @@ private final NumberKeyListener keyListener = new NumberKeyListener() {
 			String dateString = budgetCursor.getString(budgetCursor
 					.getColumnIndexOrThrow(MintDBHelper.KEY_CYCLE));
 			
-			String[] datepiece = dateString.split("-");
+			String[] datepieces = dateString.split(" ");
+			String[] datepiece = datepieces[0].split("-");
 			mMonth=Integer.parseInt(datepiece[0])-1;
-			mDay=Integer.parseInt(datepiece[1]);
-			mYear=Integer.parseInt(datepiece[2]);
+			mYear=Integer.parseInt(datepiece[1]);
+			
+			out = budgetCursor.getFloat(budgetCursor
+					.getColumnIndexOrThrow(MintDBHelper.KEY_OUT));
 		}
 		updateDisplay();
 	}
@@ -283,7 +294,7 @@ private final NumberKeyListener keyListener = new NumberKeyListener() {
 		super.onResume();
 		populateFields();
 	}
-		
+	
 	protected void onDestory(){
 		 if(mDbHelper != null){
 			 mDbHelper.close();
@@ -294,40 +305,41 @@ private final NumberKeyListener keyListener = new NumberKeyListener() {
 	private boolean saveState() {
 		
 		boolean check_flag=true;
-		String budget=budgetEditText.getText().toString();
-		String out =outEditText.getText().toString();
+		String primary = primaryEditText.getText().toString();
+		String secondary = secondaryEditText.getText().toString();
+		String money=primary+"."+secondary;
+		
 
 		int type=0;
 		type=consumptionTypeSpinner.getSelectedItemPosition();
+		
+		
 
-		if(check_flag&&TextUtils.isEmpty(budget)){
+		if((check_flag&&TextUtils.isEmpty(primary))&&(check_flag&&TextUtils.isEmpty(secondary))){
 			check_flag=false;
 			Toast.makeText(AddBudgetActivity.this, "金钱不能为空！", Toast.LENGTH_SHORT).show();
 		}
-		if(check_flag&&!TextUtils.isDigitsOnly(budget)){
+		
+		if(check_flag&&!TextUtils.isDigitsOnly(primary)){
 			check_flag=false;
 			Toast.makeText(AddBudgetActivity.this, "金钱必须为数字！", Toast.LENGTH_SHORT).show();
 		}
 
-		if(check_flag&&TextUtils.isEmpty(out)){
-			check_flag=false;
-			Toast.makeText(AddBudgetActivity.this, "金钱不能为空！", Toast.LENGTH_SHORT).show();
-		}
-		if(check_flag&&!TextUtils.isDigitsOnly(out)){
+		if(check_flag&&!TextUtils.isDigitsOnly(secondary)){
 			check_flag=false;
 			Toast.makeText(AddBudgetActivity.this, "金钱必须为数字！", Toast.LENGTH_SHORT).show();
 		}
+		
 		if(check_flag)
 		{
-			float budget0=Float.parseFloat(budget);
-			float out0=Float.parseFloat(out);
+			float budget=Float.parseFloat(money);
 			if (mRowId == null) {
-				long id = mDbHelper.createBudget(type,budget0,out0,string_time);
+				long id = mDbHelper.createBudget(type,budget,out,string_time);
 				if (id > 0) {
 					mRowId = id;
 				}
 			} else {
-				mDbHelper.updateBudget(mRowId,type,budget0,out0,string_time);
+				mDbHelper.updateBudget(mRowId,type,budget,out,string_time);
 
 			}
 		}
