@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, startMint!</string>
+    <string name="app_name">Easy Mint</string>
+    <string name="altered">已变更</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="success">成功</string>
+    <string name="and">和</string>
+    
+    
+    <string name="error_price">价格输入有误</string>
+    <string name="error_empty_debtor">债务人不能为空</string>
+    
+    <string name="fail">失败</string>
+    
+    
+    <string name="btn_blotter">流水帐</string>
+    <string name="btn_report">统计</string>
+    <string name="btn_budget">预算</string>
+    <string name="btn_debt">个人债务</string>
+    
+    <string name="description_alter_income">收入</string>
+    <string name="description_alter_expense">支出</string>
+    <string name="description_owe">欠</string>
+    <string name="description_owed">借给</string>
+    <string name="description_owe_debtor"><b>欠</b>	债务人</string>
+    <string name="description_owed_debtor"><b>借给</b>	债务人</string>
+    <string name="description_clear">的债务已<b>结清</b></string>
+    <string name="description_unclear">的债务变更为<b>未结清</b></string>
+    
+    <string name="dialog_edit_or_delete">编辑或删除</string>
+    <string name="dialog_delete_title">删除</string>
+    <string name="dialog_delete_text">确认要删除该记录?</string>
+    <string name="dialog_clear_title">是否结清</string>
+    
+    
+    <string name="header_general">概要</string>
+    <string name="header_amount">金额</string>
+    
+    <string name="title_blotter">流水帐</string>
+    <string name="title_budget">预算</string>
+    <string name="title_adddebt">添加债务</string>
+    <string name="title_debt">债务</string>
+    
+    
+    <string name="whats_on_add_title">添加</string>
+    <string name="whats_on_add_debt_title">添加债务</string>
+    <string name="whats_on_add_budget_title">添加预算</string>
+    <string name="whats_on_rank_title">最常添加</string>
+    
+    
+    
+    <!-- three tab name -->
+    <string name="addexpenses_title_tab">消费</string>
+    <string name="tab1">tab1</string>
+    <string name="tab2">tab2</string>
+    
+    <!-- add simple consumption -->
+    <string name="title_add_simple_consumption">添加消费</string>
+    <string name="name_add_simple_consumption">消费名称</string>
+    <string name="price_add_simple_consumption">消费价格</string>
+    <string name="type_add_simple_consumption">消费类型</string>
+    
+    <string name="name_hint_add_simple_consumption">输入消费名称</string>
+    <string name="price_hint_add_simple_consumption">输入消费价格</string>
+    <string name="type_hint_add_simple_consumption">输入消费类型</string>
+    
+    
+    <string name="rank_add_simple_consumption">最近常用</string>
+    
+    
+
+    <string name="description_logo">Google I/O 2011</string>
+    <string name="description_home">Home</string>
+    <string name="description_search">Search</string>
+    <string name="description_map">Map</string>
+    <string name="description_refresh">Refresh</string>
+    <string name="description_share">Share</string>
+    <string name="description_export">Export</string>
+    <string name="description_star">Star</string>
+    <string name="description_now">Go to Now</string>
+
+    <string name="title_now_playing">Now Playing</string>
+    <string name="title_schedule">Schedule</string>
+    <string name="title_sessions">Sessions</string>
+    <string name="title_session_detail">Session Information</string>
+    <string name="title_starred">Starred</string>
+    <string name="title_tracks">Tracks</string>
+    <string name="title_vendors">Sandbox</string>
+    <string name="title_vendor_detail">Company Information</string>
+    <string name="title_map">Map</string>
+    <string name="title_tagstream">Realtime Stream</string>
+    <string name="title_bulletin">Bulletin</string>
+
+    <string name="title_session_tracks">Session tracks</string>
+    <string name="title_vendor_tracks">Sandbox pods</string>
+
+    <string name="title_share">Share using</string>
+
+    <string name="title_search">Search</string>
+
+    <string name="btn_schedule">Schedule</string>
+    <string name="btn_map">Map</string>
+    <string name="btn_sessions">Sessions</string>
+    <string name="btn_starred">Starred</string>
+    <string name="btn_vendors">Sandbox</string>
+    <string name="btn_announcements">Bulletin</string>
+
+
+
+    <string name="all_sandbox_title">All companies</string>
+    <string name="all_sandbox_subtitle">Tap to filter by sandbox companies by pod.</string>
+
+    <string name="all_sessions_title">All sessions</string>
+    <string name="all_sessions_subtitle">Tap to filter sessions by track.</string>
+
+    <string name="empty_sessions">No sessions found</string>
+    <string name="empty_session_detail">No session details found</string>
+    <string name="empty_vendors">No sandbox results found</string>
+    <string name="empty_search">No search results found</string>
+    <string name="empty_links">No links available</string>
+
+    <string name="session_summary">Summary</string>
+    <string name="session_notes">Notes</string>
+    <string name="session_links">Links</string>
+    <string name="session_requirements">Requirements</string>
+    <string name="session_speakers">Speakers</string>
+
+    <string name="tag_stream">Realtime stream for</string>
+    
+    <string name="session_link_main">Web link</string>
+    <string name="session_link_moderator">Ask questions</string>
+    <string name="session_link_youtube">YouTube video</string>
+    <string name="session_link_pdf">Slides (PDF)</string>
+    <string name="session_link_feedback">Feedback on this session</string>
+    <string name="session_link_notes">Official notes</string>
+
+    <string name="search_sessions">Sessions</string>
+    <string name="search_vendors">Sandbox</string>
+
+    <string name="starred_sessions">Sessions</string>
+    <string name="starred_vendors">Sandbox</string>
+
+    <string name="search_label">Google I/O</string>
+    <string name="search_hint">Session keywords</string>
+
+
+    <string name="moderator_header">Moderator</string>
+
+    <string name="dialog_moderator_title">Google Moderator</string>
+    <string name="dialog_moderator_message">The official Google Moderator app is available in Market, would you like to install it or continue using a normal browser?</string>
+
+    <string name="dialog_moderator_web">Use Browser</string>
+    <string name="dialog_moderator_market">Visit Market</string>
+
+
+    <string name="whats_on_stream_title">Realtime\nStream</string>
+    <string name="whats_on_now_playing_title">Now Playing</string>
+    <string name="whats_on_thank_you_title">See you next year!</string>
+
+    <string name="permission_write">Modify Google I/O schedule data</string>
+
+    <string name="toast_now_not_visible">Press this button during Google I/O to show the current time.</string>
+
+    <!-- Notes integration -->
+    <string name="notes_catch_powered_by">Notes are powered by <a href="http://www.catch.com/">Catch.com</a>.</string>
+    <string name="notes_catch_market_title">Install Catch Notes</string>
+    <string name="notes_catch_market_subtitle">You can take notes for Google I/O sessions using the latest version of Catch Notes, available from Android Market.</string>
+    <string name="notes_catch_new_title">Create a new note</string>
+    <string name="notes_catch_view_title">View track notes</string>
+    <string name="toast_notes_error_invoking">Error invoking Catch Notes.</string>
+
+
+    <!-- EULA -->
+    <string name="eula_title">EULA title.</string>
+    <string name="eula_text">EULA goes here.</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+
+	<string name="add_consumption_type1">选择消费类型</string>
+	<string name="budget1">输入预算金额</string>
+	<string name="out1">输入支出金额</string>
+	<string name="confim">确定</string>
+	<string name="account_type_prompt">选择账目类型</string>
+</resources>

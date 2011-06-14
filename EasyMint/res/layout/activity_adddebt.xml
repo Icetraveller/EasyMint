@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    >
+    
+<include layout="@layout/actionbar"/>
+
+<ScrollView 
+	android:id="@+id/main"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none"
+    android:layout_weight="1"
+    android:background="#FFF5F5F5">
+    
+<RelativeLayout 
+                android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:padding="10dip"
+                > 
+             <include layout="@layout/item_time_bar"
+               android:id="@+id/time_bar"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="10dip"
+              />
+    <RelativeLayout android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="10dip"
+                android:layout_below="@id/time_bar"
+                android:background="@drawable/content_bg"
+                android:id="@+id/section1">
+    <TextView android:id="@+id/l_section1" 
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content"
+              android:text="@string/header_general"
+              style="@style/WordPressSectionHeader"/>              
+    <EditText android:id="@+id/title" 
+    		  android:minHeight="40dip"
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content" 
+              android:background="@android:drawable/editbox_background"
+              android:autoText="true"
+              android:capitalize="sentences"
+              android:hint="债务人"
+              android:layout_below="@id/l_section1"
+              android:layout_marginBottom="10dip"/> 
+    <EditText android:id="@+id/content"
+    		  android:gravity="top" 
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content" 
+              android:background="@android:drawable/editbox_background"
+              android:minLines="5"
+              android:autoText="true"
+              android:capitalize="sentences"
+              android:layout_below="@id/title"
+              android:textColorLink="#21759b"
+              android:hint="备注"/> 
+              </RelativeLayout>
+              
+              <RelativeLayout android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                android:background="@drawable/content_bg"
+                android:layout_below="@id/section1"
+                android:id="@+id/section2">
+                
+                 <TextView android:id="@+id/l_section2" 
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content"
+              android:text="@string/header_amount"
+              style="@style/WordPressSectionHeader"
+              android:layout_marginBottom="10dip"
+              />
+              
+              <include layout="@layout/item_amount_input"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="20dip"
+              android:layout_below="@+id/l_section2"
+              />
+              </RelativeLayout>
+              <Button
+			android:id="@+id/save" 
+            android:layout_width="wrap_content"  
+            android:layout_height="wrap_content" 
+            android:layout_below="@id/section2"
+            android:background="@drawable/wp_button"
+            android:layout_alignParentRight="true"
+            android:textSize="20dip"
+            android:text="保存" /> 
+            
+			<Button
+			android:id="@+id/cancel" 
+            android:layout_alignTop="@id/save"
+            android:layout_toLeftOf="@id/save" 
+            android:background="@drawable/wp_button"
+            android:layout_width="wrap_content"  
+            android:layout_height="wrap_content"
+            android:textSize="20dip"
+            android:text="舍弃" />
+</RelativeLayout>
+              
+</ScrollView>
+
+</LinearLayout>

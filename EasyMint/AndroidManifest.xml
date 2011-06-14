@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.easymint"
+      android:versionCode="1"
+      android:versionName="1.0"
+      >
+    <application  android:label="@string/app_name" 
+    android:icon="@drawable/ic_launcher"
+        android:theme="@style/Theme.IOSched">
+        <activity android:name=".ui.HomeActivity"
+        android:theme="@style/Theme.IOSched.Home"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+        	android:name=".ui.BlotterActivity"
+			android:label="@string/title_blotter"/>
+		<activity
+        	android:name=".ui.BudgetActivity"
+			android:label="@string/title_budget"/>
+		<activity
+        	android:name=".ui.DebtActivity"
+			android:label="@string/title_debt"/>
+		<activity
+        	android:name=".ui.AddDebtActivity"
+			android:label="@string/title_adddebt"/>
+		<activity
+        	android:name=".ui.AddBudgetActivity"
+			android:label="@string/title_adddebt"/>
+		<activity
+        	android:name=".ui.AddConsumptionActivity"
+			android:label="@string/title_adddebt"/>
+    </application>
+    <uses-sdk android:minSdkVersion="8" />
+
+</manifest> 

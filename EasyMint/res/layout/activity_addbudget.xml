@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	                  android:layout_width="fill_parent"
+	                  android:layout_height="fill_parent"
+	                  android:orientation="vertical">
+	<include layout="@layout/actionbar"/>
+	<ScrollView 
+	android:id="@+id/main"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none"
+    android:layout_weight="1"
+    android:background="#FFF5F5F5">
+    <RelativeLayout 
+                android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:padding="10dip"
+                > 
+  			<include layout="@layout/item_time_bar"
+  		   		android:id="@+id/time_bar"
+           		android:layout_width="fill_parent"
+           		android:layout_height="wrap_content"
+           		android:layout_marginBottom="10dip"/>
+           		<!--  
+<LinearLayout android:id="@+id/layout0"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content">
+	 <Button android:id="@+id/pickDate"
+	         android:layout_width="fill_parent"
+	         android:layout_height="wrap_content"
+	         android:layout_weight="1"
+	         android:text="date"/>
+	         
+</LinearLayout>
+<LinearLayout android:id="@+id/layout1" 
+	          android:layout_height="wrap_content"
+		      android:layout_width="fill_parent"
+		      android:layout_marginBottom="3dp" 
+		      android:layout_below="@id/layout0">
+    <TextView android:id="@+id/add_consumption_type1"
+		      android:text="@string/add_consumption_type1" 
+		      android:textSize="20dp"
+			  android:layout_height="fill_parent"
+			  android:layout_width="wrap_content"
+			  android:layout_weight="3"/>
+	<Spinner android:id="@+id/spinner"
+			 android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_weight="4"
+             android:entries="@array/account_type_array"/>
+       <LinearLayout android:id="@+id/layout4" 
+	          android:layout_height="wrap_content"
+		      android:layout_width="fill_parent"
+		      android:layout_marginBottom="3dp" 
+		      android:layout_below="@id/layout3">
+      <Button android:id="@+id/confim" 
+              android:text="@string/confim"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:layout_width="0dp" /> 
+      <Button android:id="@+id/cancel"
+              android:text="@string/cancel"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:layout_width="0dp" /> 
+	</LinearLayout>
+	</LinearLayout>-->
+
+ <RelativeLayout android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="10dip"
+                android:layout_below="@id/time_bar"
+                android:background="@drawable/content_bg"
+                android:id="@+id/section1">
+    	<TextView android:id="@+id/l_section1" 
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content"
+              android:text="@string/header_general"
+              android:layout_marginBottom="20dip"
+              style="@style/WordPressSectionHeader"/>
+               <Spinner android:id="@+id/spinner"
+        			android:layout_width="fill_parent"
+        			android:layout_height="wrap_content"
+        			android:background="@drawable/wp_spinner_bg"
+        			android:prompt="@string/account_type_prompt"
+      				android:entries="@array/account_type_array"
+   					android:layout_below="@id/l_section1"/>
+              </RelativeLayout>
+              
+               <RelativeLayout android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                android:background="@drawable/content_bg"
+                android:layout_below="@id/section1"
+                android:id="@+id/section2">
+                
+               <TextView android:id="@+id/l_section2" 
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content"
+              android:text="@string/header_amount"
+              style="@style/WordPressSectionHeader"
+              android:layout_marginBottom="10dip"
+              />
+              <include layout="@layout/item_amount_input"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="20dip"
+              android:layout_below="@+id/l_section2"
+              />
+              </RelativeLayout>
+<Button
+			android:id="@+id/confirm" 
+            android:layout_width="wrap_content"  
+            android:layout_height="wrap_content" 
+            android:layout_below="@id/section2"
+            android:background="@drawable/wp_button"
+            android:layout_alignParentRight="true"
+            android:textSize="20dip"
+            android:text="保存" /> 
+            
+			<Button
+			android:id="@+id/cancel" 
+            android:layout_alignTop="@id/confirm"
+            android:layout_toLeftOf="@id/confirm" 
+            android:background="@drawable/wp_button"
+            android:layout_width="wrap_content"  
+            android:layout_height="wrap_content"
+            android:textSize="20dip"
+            android:text="舍弃" />
+    </RelativeLayout>
+  </ScrollView>
+  
+</LinearLayout>
+
+
