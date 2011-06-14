@@ -21,38 +21,38 @@ public class MintDBHelper {
     /*
      * common
      */
-    public static final String KEY_ROWID = "_id";	//Ö÷¼ü
-    public static final String KEY_DATE = "date";	//ÈÕÆÚ
-    public static final String KEY_NOTES= "notes";	//±¸×¢
+    public static final String KEY_ROWID = "_id";	//ï¿½ï¿½ï¿½
+    public static final String KEY_DATE = "date";	//ï¿½ï¿½ï¿½ï¿½
+    public static final String KEY_NOTES= "notes";	//ï¿½ï¿½×¢
     public static final String KEY_STATUS= "status";	//status(0 income/ )
     
     /*
      * consumption
      */
-    public static final String KEY_CONSUMPTION_TITLE = "consumption_title";	//Ïû·ÑÏîÄ¿Ãû³Æ
-    public static final String KEY_PRICE = "price";	//Ïû·Ñ½ð¶î
-    public static final String KEY_CONSUMPTION_TYPE = "consumption_type";	//Ïû·ÑÀàÐÍ
-    public static final String KEY_QUANTITY= "quantity";	//´Ë´Î¹ºÂòµÄÊýÁ¿
+    public static final String KEY_CONSUMPTION_TITLE = "consumption_title";	//ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½
+    public static final String KEY_PRICE = "price";	//ï¿½ï¿½Ñ½ï¿½ï¿½
+    public static final String KEY_CONSUMPTION_TYPE = "consumption_type";	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public static final String KEY_QUANTITY= "quantity";	//ï¿½Ë´Î¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     
     
     /*
      * rank
      */
-    public static final String KEY_COUNTS = "counts";	//¼ÆÊý£¬¼ÇÂ¼¸ÃÎïÆ·¹ºÂò´ÎÊý
-    public static final String KEY_LASTPRICE = "last_price";	//ÉÏ´Î¹ºÂò½ð¶î
+    public static final String KEY_COUNTS = "counts";	//ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public static final String KEY_LASTPRICE = "last_price";	//ï¿½Ï´Î¹ï¿½ï¿½ï¿½ï¿½ï¿½
     
     /*
      * debt
      */
-    public static final String KEY_DEBTOR = "debtor";	//Õ®ÎñÈË 
-    public static final String KEY_CLEAR = "clear";	//ÊÇ·ñÇåËã
+    public static final String KEY_DEBTOR = "debtor";	//Õ®ï¿½ï¿½ï¿½ï¿½ 
+    public static final String KEY_CLEAR = "clear";	//ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½
     
     /*
      * budget
      */
-    public static final String KEY_BUDGET = "budget";	//Ô¤Ëã½ð¶î
-    public static final String KEY_OUT = "out";	//Êµ¼ÊÖ§³ö
-    public static final String KEY_CYCLE = "cycle";	//Ô¤ËãÖÜÆÚ
+    public static final String KEY_BUDGET = "budget";	//Ô¤ï¿½ï¿½ï¿½ï¿½
+    public static final String KEY_OUT = "out";	//Êµï¿½ï¿½Ö§ï¿½ï¿½
+    public static final String KEY_CYCLE = "cycle";	//Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
    
     private static final String DATABASE_NAME = "Mint";
     private static final int DATABASE_VERSION = 1;
@@ -168,6 +168,39 @@ public class MintDBHelper {
     			KEY_CONSUMPTION_TITLE,KEY_PRICE,KEY_CONSUMPTION_TYPE,KEY_DATE,KEY_QUANTITY,KEY_NOTES,KEY_STATUS}, sqlString, null, null, null, KEY_DATE+" DESC");
     }
     
+
+     /* 
+     * report used
+     * */
+    public Cursor fetchSum(){
+    	return mDb.query(DATABASE_TABLE_CONSUMPTION,
+    			new String[]{KEY_ROWID,
+    			"sum(" + KEY_PRICE + ")" },
+    			null,null,
+    			null,
+    			null,null);
+    }
+    public Cursor fetchSumBy(String groupBy){
+    	return mDb.query(DATABASE_TABLE_CONSUMPTION,
+    			new String[]{KEY_ROWID,
+    			groupBy,
+    			"sum(" + KEY_PRICE + ")" },
+    			null,null,
+    			groupBy,
+    			null,null);
+    }
+    public Cursor fetchSumByDate(String from,String to){
+    	return mDb.query(DATABASE_TABLE_CONSUMPTION,
+    			new String[]{KEY_ROWID,
+    			KEY_DATE,
+    			"sum(" + KEY_PRICE + ")" },
+    			KEY_DATE + " between " + "'" + from +"'" + " and " + "'" + to + "'",
+    			null,
+    			null,
+    			null,
+    			null);
+    }
+
     /*
      * about rank
      */
