@@ -264,10 +264,15 @@ public class MintDBHelper {
         initialValues.put(KEY_CYCLE, cycle);
         return mDb.update(DATABASE_TABLE_BUDGET, initialValues, KEY_ROWID + "=" + rowId, null) > 0;
     }
+    public boolean updateBudgetOut(long rowId,float out) {
+    	ContentValues initialValues = new ContentValues();
+    	initialValues.put(KEY_OUT, out);
+    	return mDb.update(DATABASE_TABLE_BUDGET, initialValues, KEY_ROWID + "=" + rowId, null) > 0;
+    }
     
     public Cursor fetchAllBudget() {
         return mDb.query(DATABASE_TABLE_BUDGET, new String[] {KEY_ROWID,
-        		KEY_CONSUMPTION_TYPE,KEY_BUDGET,KEY_OUT,KEY_CYCLE}, null, null, null, null, null);
+        		KEY_CONSUMPTION_TYPE,KEY_BUDGET,KEY_OUT,KEY_CYCLE}, null, null, null, null, KEY_CYCLE+" DESC, "+KEY_CONSUMPTION_TYPE);
     }
     public Cursor fetchBudgetById(long id) {
     	return mDb.query(DATABASE_TABLE_BUDGET, new String[] {KEY_ROWID,

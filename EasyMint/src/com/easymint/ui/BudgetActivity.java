@@ -39,12 +39,9 @@ public class BudgetActivity extends BaseMultiPaneActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_budget);
-
+		getActivityHelper().setupActionBar(getTitle(), 0);
 		mDbHelper = new MintDBHelper(this);
 		mDbHelper.open();
-		
-//		mDbHelper.createBudget(1, 2000, 100, "2010-1989");
-		
 		fillData();
 	}
 	
@@ -60,7 +57,7 @@ public class BudgetActivity extends BaseMultiPaneActivity {
 		Cursor cursor = mDbHelper.fetchAllBudget();
 		startManagingCursor(cursor);
 
-		getActivityHelper().setupActionBar(getTitle(), 0);
+		
 		ListView listView = (ListView) findViewById(R.id.list_budget);
 
 		BudgetAdapter budgetrAdapter = new BudgetAdapter(this, cursor);
@@ -133,12 +130,10 @@ public class BudgetActivity extends BaseMultiPaneActivity {
 
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
-			
+			Currency currency = Currency.getInstance("CNY");
+			String symbol = currency.getSymbol(Locale.CHINA);
 			int mYear;
 		    int mMonth;
-		    int mDay;
-		    int mHour;
-		    int mMinute;
 
 			TextView dateTextView = (TextView) view.findViewById(R.id.date);
 
@@ -174,7 +169,7 @@ public class BudgetActivity extends BaseMultiPaneActivity {
  
 			float budgetString = cursor.getFloat(cursor
 					.getColumnIndexOrThrow(MintDBHelper.KEY_BUDGET));
-			budget.setText(""+budgetString);
+			budget.setText(""+budgetString+symbol);
 			
 			int i = cursor.getInt(cursor
 					.getColumnIndexOrThrow(MintDBHelper.KEY_CONSUMPTION_TYPE));
@@ -183,16 +178,18 @@ public class BudgetActivity extends BaseMultiPaneActivity {
 			
 			float consumptionString = cursor.getFloat(cursor
 					.getColumnIndexOrThrow(MintDBHelper.KEY_OUT));
-			consumption.setText("-"+consumptionString);
+			if(consumptionString>0)
+				consumption.setText("-"+consumptionString+symbol);
+			else consumption.setText(""+consumptionString+symbol);
 			
 			float amountString=budgetString-consumptionString;
 			if(amountString>0)
 			{
-			    amount.setText("+"+amountString);
+			    amount.setText("+"+amountString+symbol);
 			}
 			else
 			{
-				amount.setText("-"+amountString);	
+				amount.setText(""+amountString+symbol);	
 			}
 			
 			progressbar.setMax((int)budgetString);

@@ -47,10 +47,15 @@ public class AddConsumptionActivity extends BaseMultiPaneActivity {
 
 	private Button dateButton;
 	private Button timeButton; // 日期时间
-	private RadioButton payout;
-	private RadioButton income;
 	private Button confirmButton;
 	private Button cancelButton; // 提交取消
+	
+	private boolean protectFlag = true;
+	private float outToSave = 0;
+	private long originBudgetId = 0;
+	private int originType = 0;
+	private int lastType = 0;
+	
 
 	private int mYear;
 	private int mMonth;
@@ -66,7 +71,7 @@ public class AddConsumptionActivity extends BaseMultiPaneActivity {
 
 	private String string_date; // 日期定义
 	private String date_time;
-	private int status = 0;
+	private int status = 1;
 
 	private static final char[] commaChars = new char[] { '.', ',' };
 	private static final char[] acceptedChars = new char[] { '0', '1', '2',
@@ -137,7 +142,6 @@ public class AddConsumptionActivity extends BaseMultiPaneActivity {
 							
 
 						}
-
 					}
 				});
 
@@ -181,6 +185,13 @@ public class AddConsumptionActivity extends BaseMultiPaneActivity {
 			}
 		});
 	}
+	
+	protected void onDestory(){
+		 if(mDbHelper != null){
+			 mDbHelper.close();
+		 }
+		 super.onDestroy();
+	 }
 
 	protected void onDotOrComma() {
 		secondaryEditText.requestFocus();
@@ -349,10 +360,10 @@ public class AddConsumptionActivity extends BaseMultiPaneActivity {
 					.getColumnIndexOrThrow(MintDBHelper.KEY_STATUS));
 			switch (status) {
 			case 0:
-				statusToggleButton.setChecked(false);
+				statusToggleButton.setChecked(true);
 				break;
 			case 1:
-				statusToggleButton.setChecked(true);
+				statusToggleButton.setChecked(false);
 				break;
 			default:
 				break;
@@ -378,6 +389,20 @@ public class AddConsumptionActivity extends BaseMultiPaneActivity {
 			String[] timepiece = dateStrings[1].split(":");
 			mHour = Integer.parseInt(timepiece[0]);
 			mMinute = Integer.parseInt(timepiece[1]);
+			
+			String budgetDateString = String.valueOf(pad(mMonth+1))+"-"+mYear;
+			Cursor budgetCursor = mDbHelper.fetchBudgetByTypeandDate(type, budgetDateString);
+			startManagingCursor(budgetCursor);
+			budgetCursor.moveToFirst();
+			if(budgetCursor.getCount()==1){
+				originType = type;
+				originBudgetId = budgetCursor.getLong(budgetCursor.getColumnIndexOrThrow(MintDBHelper.KEY_ROWID));
+				float out = budgetCursor.getFloat(budgetCursor.getColumnIndexOrThrow(MintDBHelper.KEY_OUT));
+				if(status == 1)
+					outToSave = out - price*quantity;
+				else outToSave = out + price*quantity;
+				protectFlag=true;
+			}
 		}
 		updateDisplayTime();
 		updateDisplayDate();
@@ -443,13 +468,31 @@ public class AddConsumptionActivity extends BaseMultiPaneActivity {
 						Toast.LENGTH_SHORT).show();
 			} else {
 				float_money = int_number * float_money;
-
+				
+				String budgetDateString = String.valueOf(pad(mMonth+1))+"-"+mYear;
+				Cursor budgetCursor = mDbHelper.fetchBudgetByTypeandDate(type, budgetDateString);
+				startManagingCursor(budgetCursor);
+				budgetCursor.moveToFirst();
+				if(budgetCursor.getCount()==1){
+					long budgetId = budgetCursor.getLong(budgetCursor.getColumnIndexOrThrow(MintDBHelper.KEY_ROWID));
+					float out = budgetCursor.getFloat(budgetCursor.getColumnIndexOrThrow(MintDBHelper.KEY_OUT));
+					if(originType != type && mRowId!=null ){
+						mDbHelper.updateBudgetOut(originBudgetId, outToSave);
+						out = outToSave;
+					}
+					if(status == 0)
+						outToSave = outToSave+out - float_money;
+					else outToSave = outToSave + float_money+out;
+					mDbHelper.updateBudgetOut(budgetId, outToSave);
+				}
 				if (mRowId == null) {
 					long id = mDbHelper.createConsumption(content, float_money,
 							type, date_time, int_number, remark, status);
 					if (id > 0) {
 						mRowId = id;
 					}
+					
+					
 
 				} else {
 					mDbHelper.updateConsumption(mRowId, content, float_money,

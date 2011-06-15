@@ -232,7 +232,6 @@ public class BlotterActivity extends BaseMultiPaneActivity{
 			//setup price
 			float price = cursor.getFloat(cursor.getColumnIndexOrThrow(MintDBHelper.KEY_PRICE));
 			Currency currency = Currency.getInstance("CNY");
-			currency.getSymbol();
 			priceTextView.setText(price+" "+currency.getSymbol(Locale.CHINA));
 			
 			//setup category
