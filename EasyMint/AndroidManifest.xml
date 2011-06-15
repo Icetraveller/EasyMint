@@ -30,10 +30,10 @@
 			android:label="@string/title_adddebt"/>
 		<activity
         	android:name=".ui.AddBudgetActivity"
-			android:label="@string/title_adddebt"/>
+			android:label="@string/title_addbudget"/>
 		<activity
         	android:name=".ui.AddConsumptionActivity"
-			android:label="@string/title_adddebt"/>
+			android:label="@string/title_addconsumption"/>
 		<activity
         	android:name=".ui.ReportActivity"
 			android:label="@string/title_report"/>

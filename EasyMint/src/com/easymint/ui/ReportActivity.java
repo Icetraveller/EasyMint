@@ -112,32 +112,32 @@ public class ReportActivity extends BaseMultiPaneActivity {
 		//today
 		Cursor cToday = mDbHelper.fetchConsumptionSumByDate(today + startOfDay,today + endOfDay);
 		this.startManagingCursor(cToday);
-		cursor.addRow(readDataFromCursor(cToday, "Today"));
+		cursor.addRow(readDataFromCursor(cToday, "今天"));
 		
 		//yesterday
 		Cursor cYesterday = mDbHelper.fetchConsumptionSumByDate(yesterday + startOfDay, yesterday + endOfDay);
 		this.startManagingCursor(cYesterday);
-		cursor.addRow(readDataFromCursor(cYesterday, "Yestoday"));
+		cursor.addRow(readDataFromCursor(cYesterday, "昨天"));
 		
 		//week
 		Cursor cWeek = mDbHelper.fetchConsumptionSumByDate(week + startOfDay, today + endOfDay);
 		this.startManagingCursor(cWeek);
-		cursor.addRow(readDataFromCursor(cWeek, "In recent week"));
+		cursor.addRow(readDataFromCursor(cWeek, "这周"));
 		
 		//month
 		Cursor cMonth = mDbHelper.fetchConsumptionSumByDate(month + startOfDay,today + endOfDay);
 		this.startManagingCursor(cMonth);
-		cursor.addRow(readDataFromCursor(cMonth, "In recent Month"));
+		cursor.addRow(readDataFromCursor(cMonth, "这个月"));
 		
 		//threeMonth
 		Cursor cThreeMonth = mDbHelper.fetchConsumptionSumByDate(threeMonth + startOfDay,today + endOfDay);
 		this.startManagingCursor(cThreeMonth);
-		cursor.addRow(readDataFromCursor(cThreeMonth, "In recent Three Months"));
+		cursor.addRow(readDataFromCursor(cThreeMonth, "最近三个月"));
 		
 		//sixMonth
 		Cursor cSixMonth = mDbHelper.fetchConsumptionSumByDate(sixMonth + startOfDay,today + endOfDay);
 		this.startManagingCursor(cSixMonth);
-		cursor.addRow(readDataFromCursor(cSixMonth, "In recent Six Months"));
+		cursor.addRow(readDataFromCursor(cSixMonth, "半年"));
 		
 		
 		ReportAdapter rAdapter = new ReportAdapter(this, cursor);

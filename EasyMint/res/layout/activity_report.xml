@@ -20,7 +20,7 @@
                 <TextView android:id="@+id/l_section1" 
               android:layout_width="fill_parent" 
               android:layout_height="wrap_content"
-              android:text="@string/header_general"
+              android:text="@string/header_choice"
               android:layout_marginBottom="20dip"
               style="@style/WordPressSectionHeader"/>
   <RelativeLayout
@@ -62,7 +62,7 @@
                 <TextView android:id="@+id/l_section2" 
               android:layout_width="fill_parent" 
               android:layout_height="wrap_content"
-              android:text="@string/header_amount"
+              android:text="@string/header_report"
               style="@style/WordPressSectionHeader"
               android:layout_marginBottom="10dip"
               />

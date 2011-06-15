@@ -76,7 +76,7 @@
     	<TextView android:id="@+id/l_section1" 
               android:layout_width="fill_parent" 
               android:layout_height="wrap_content"
-              android:text="@string/header_general"
+              android:text="@string/header_type"
               android:layout_marginBottom="20dip"
               style="@style/WordPressSectionHeader"/>
                <Spinner android:id="@+id/spinner"

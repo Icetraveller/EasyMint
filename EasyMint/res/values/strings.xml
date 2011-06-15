@@ -38,10 +38,15 @@
     
     <string name="header_general">概要</string>
     <string name="header_amount">金额</string>
+    <string name="header_type">类型</string>
+    <string name="header_choice">选项</string>
+    <string name="header_report">统计结果</string>
     
     <string name="title_blotter">流水帐</string>
     <string name="title_budget">预算</string>
     <string name="title_adddebt">添加债务</string>
+    <string name="title_addconsumption">添加消费</string>
+    <string name="title_addbudget">添加预算</string>
     <string name="title_debt">债务</string>
     <string name="title_report">消费统计</string>
     
@@ -49,7 +54,7 @@
     <string name="whats_on_add_title">添加</string>
     <string name="whats_on_add_debt_title">添加债务</string>
     <string name="whats_on_add_budget_title">添加预算</string>
-    <string name="whats_on_rank_title">最常添加</string>
+    <string name="whats_on_rank_title">显示列表</string>
     
     
     

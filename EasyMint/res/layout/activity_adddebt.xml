@@ -36,9 +36,32 @@
     <TextView android:id="@+id/l_section1" 
               android:layout_width="fill_parent" 
               android:layout_height="wrap_content"
+              android:text="@string/header_amount"
+              android:layout_marginBottom="10dip"
+              style="@style/WordPressSectionHeader"/>  
+              <include layout="@layout/item_amount_input"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="20dip"
+              android:layout_below="@+id/l_section1"
+              />            
+    
+              </RelativeLayout>
+              
+              <RelativeLayout android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                android:background="@drawable/content_bg"
+                android:layout_below="@id/section1"
+                android:id="@+id/section2">
+                
+                 <TextView android:id="@+id/l_section2" 
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content"
               android:text="@string/header_general"
-              style="@style/WordPressSectionHeader"/>              
-    <EditText android:id="@+id/title" 
+              style="@style/WordPressSectionHeader"
+              android:layout_marginBottom="10dip"
+              />
+              <EditText android:id="@+id/title" 
     		  android:minHeight="40dip"
               android:layout_width="fill_parent" 
               android:layout_height="wrap_content" 
@@ -46,7 +69,7 @@
               android:autoText="true"
               android:capitalize="sentences"
               android:hint="债务人"
-              android:layout_below="@id/l_section1"
+              android:layout_below="@id/l_section2"
               android:layout_marginBottom="10dip"/> 
     <EditText android:id="@+id/content"
     		  android:gravity="top" 
@@ -59,28 +82,7 @@
               android:layout_below="@id/title"
               android:textColorLink="#21759b"
               android:hint="备注"/> 
-              </RelativeLayout>
               
-              <RelativeLayout android:layout_width="fill_parent" 
-                android:layout_height="fill_parent"
-                android:background="@drawable/content_bg"
-                android:layout_below="@id/section1"
-                android:id="@+id/section2">
-                
-                 <TextView android:id="@+id/l_section2" 
-              android:layout_width="fill_parent" 
-              android:layout_height="wrap_content"
-              android:text="@string/header_amount"
-              style="@style/WordPressSectionHeader"
-              android:layout_marginBottom="10dip"
-              />
-              
-              <include layout="@layout/item_amount_input"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginBottom="20dip"
-              android:layout_below="@+id/l_section2"
-              />
               </RelativeLayout>
               <Button
 			android:id="@+id/save" 
