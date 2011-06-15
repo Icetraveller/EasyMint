@@ -180,7 +180,9 @@ public class BudgetActivity extends BaseMultiPaneActivity {
 					.getColumnIndexOrThrow(MintDBHelper.KEY_OUT));
 			if(consumptionString>0)
 				consumption.setText("-"+consumptionString+symbol);
-			else consumption.setText(""+consumptionString+symbol);
+			else {
+				consumption.setText("+"+(0-consumptionString)+symbol);
+			}
 			
 			float amountString=budgetString-consumptionString;
 			if(amountString>0)

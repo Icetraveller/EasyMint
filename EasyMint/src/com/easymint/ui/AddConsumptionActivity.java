@@ -12,6 +12,7 @@ import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.NumberKeyListener;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -51,7 +52,7 @@ public class AddConsumptionActivity extends BaseMultiPaneActivity {
 	private Button cancelButton; // 提交取消
 	
 	private boolean protectFlag = true;
-	private float outToSave = 0;
+	private float originOut = 0;
 	private long originBudgetId = 0;
 	private int originType = 0;
 	private int lastType = 0;
@@ -398,9 +399,14 @@ public class AddConsumptionActivity extends BaseMultiPaneActivity {
 				originType = type;
 				originBudgetId = budgetCursor.getLong(budgetCursor.getColumnIndexOrThrow(MintDBHelper.KEY_ROWID));
 				float out = budgetCursor.getFloat(budgetCursor.getColumnIndexOrThrow(MintDBHelper.KEY_OUT));
+				Log.d("add expense", "populate out = "+out);
 				if(status == 1)
-					outToSave = out - price*quantity;
-				else outToSave = out + price*quantity;
+				{
+					if(out >0) originOut = out - price*quantity;
+					else originOut = price*quantity - out;
+				}
+				else originOut = out + price*quantity;
+				Log.d("add expense", "populate originOut = "+originOut);
 				protectFlag=true;
 			}
 		}
@@ -476,14 +482,16 @@ public class AddConsumptionActivity extends BaseMultiPaneActivity {
 				if(budgetCursor.getCount()==1){
 					long budgetId = budgetCursor.getLong(budgetCursor.getColumnIndexOrThrow(MintDBHelper.KEY_ROWID));
 					float out = budgetCursor.getFloat(budgetCursor.getColumnIndexOrThrow(MintDBHelper.KEY_OUT));
+					Log.d("add expense", "save originType = "+originType+"     type="+type);
 					if(originType != type && mRowId!=null ){
-						mDbHelper.updateBudgetOut(originBudgetId, outToSave);
-						out = outToSave;
+						mDbHelper.updateBudgetOut(originBudgetId, originOut);
+						Log.d("add expense", "save originOut = "+originOut);
+						out = originOut;
 					}
 					if(status == 0)
-						outToSave = outToSave+out - float_money;
-					else outToSave = outToSave + float_money+out;
-					mDbHelper.updateBudgetOut(budgetId, outToSave);
+						originOut = originOut - float_money ;
+					else originOut = originOut + float_money+out;
+					mDbHelper.updateBudgetOut(budgetId, originOut);
 				}
 				if (mRowId == null) {
 					long id = mDbHelper.createConsumption(content, float_money,
