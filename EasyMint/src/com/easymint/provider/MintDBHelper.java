@@ -286,4 +286,36 @@ public class MintDBHelper {
     	return mDb.query(DATABASE_TABLE_BUDGET, new String[] {KEY_ROWID,
         		KEY_CONSUMPTION_TYPE,KEY_BUDGET,KEY_OUT,KEY_CYCLE}, KEY_CONSUMPTION_TYPE +"="+consumptionType+" and "+KEY_CYCLE + "='"+dateString+"'", null, null, null, null);
     }
+    
+    /* 
+     * report used
+     * */
+    public Cursor fetchConsumptionSum(){
+    	return mDb.query(DATABASE_TABLE_CONSUMPTION,
+    			new String[]{KEY_ROWID,
+    			"sum(" + KEY_PRICE + ")" },
+    			null,null,
+    			null,
+    			null,null);
+    }
+    public Cursor fetchConsumptionSumByType(String groupBy){
+    	return mDb.query(DATABASE_TABLE_CONSUMPTION,
+    			new String[]{KEY_ROWID,
+    			groupBy,
+    			"sum(" + KEY_PRICE + ")" },
+    			KEY_STATUS +"= 1",null,
+    			groupBy,
+    			null,null);
+    }
+    public Cursor fetchConsumptionSumByDate(String from,String to){
+    	return mDb.query(DATABASE_TABLE_CONSUMPTION,
+    			new String[]{KEY_ROWID,
+    			KEY_DATE,
+    			"sum(" + KEY_PRICE + ")" },
+    			KEY_DATE + " between " + "'" + from +"'" + " and " + "'" + to + "' and " +KEY_STATUS +"= 1",
+    			null,
+    			null,
+    			null,
+    			null);
+    }
 }

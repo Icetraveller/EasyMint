@@ -34,6 +34,9 @@
 		<activity
         	android:name=".ui.AddConsumptionActivity"
 			android:label="@string/title_adddebt"/>
+		<activity
+        	android:name=".ui.ReportActivity"
+			android:label="@string/title_report"/>
     </application>
     <uses-sdk android:minSdkVersion="8" />
 

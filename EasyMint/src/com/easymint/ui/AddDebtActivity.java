@@ -161,8 +161,13 @@ public class AddDebtActivity extends BaseMultiPaneActivity{
 				String[] dateStrings = dateString.split(" ");
 				
 				String[] datepiece = dateStrings[0].split("-");
-				mMonth=Integer.parseInt(datepiece[0])-1;
-				mYear=Integer.parseInt(datepiece[1]);
+				mDay = Integer.parseInt(datepiece[2]);
+				mMonth=Integer.parseInt(datepiece[1])-1;
+				mYear=Integer.parseInt(datepiece[0]);
+				
+				String[] timepiece = dateStrings[1].split(":");
+				mHour = Integer.parseInt(timepiece[0]);
+				mMinute = Integer.parseInt(timepiece[1]);
 				
 				
 		}else {
@@ -202,8 +207,8 @@ public class AddDebtActivity extends BaseMultiPaneActivity{
 	
 	private void save(){
 		String date = new StringBuilder()
-		.append(pad(mMonth + 1)).append("-").append(pad(mDay)).append("-")
-		.append(mYear).append(" ").append(mHour).append(":").append(mMinute).toString();
+		.append(mYear).append("-").append(pad(mMonth + 1)).append("-").append(pad(mDay)).append(" ")
+		.append(mHour).append(":").append(mMinute).toString();
 		String notes = contentEditText.getText().toString();
 		 if (mRowId == null ) {
 	            long id = mDbHelper.createDebt(debtorToSave, priceToSave, date, notes, status, clear);
@@ -396,10 +401,9 @@ private final NumberKeyListener keyListener = new NumberKeyListener() {
         
      // updates the date in the TextView
 	private void updateDisplayDate() {
-		dateButton.setText(new StringBuilder()
-				// Month is 0 based so add 1
-				.append(mMonth + 1).append("-").append(mDay).append("-")
-				.append(mYear).append(" "));
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(mYear, mMonth, mDay,mHour,mMinute);
+		dateButton.setText(String.format("  %tB %te %tY ", calendar,calendar,calendar));
 	}
 
 	// updates the time in the TextView

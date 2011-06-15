@@ -216,9 +216,9 @@ public class BlotterActivity extends BaseMultiPaneActivity{
 			
 			
 			String[] datepiece = dateStrings[0].split("-");
-			mMonth=Integer.parseInt(datepiece[0])-1;
-			mDay=Integer.parseInt(datepiece[1]);
-			mYear=Integer.parseInt(datepiece[2]);
+			mMonth=Integer.parseInt(datepiece[1])-1;
+			mDay=Integer.parseInt(datepiece[2]);
+			mYear=Integer.parseInt(datepiece[0]);
 			
 			String[] timepiece = dateStrings[1].split(":");
 			mHour = Integer.parseInt(timepiece[0]);

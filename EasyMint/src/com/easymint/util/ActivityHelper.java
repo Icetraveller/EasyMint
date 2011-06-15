@@ -18,6 +18,7 @@ package com.easymint.util;
 
 
 import com.easymint.R;
+import com.easymint.ui.BudgetActivity;
 import com.easymint.ui.HomeActivity;
 
 import android.app.Activity;
@@ -74,8 +75,8 @@ public class ActivityHelper {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_search:
-                goSearch();
+            case R.id.menu_budget:
+                mActivity.startActivity(new Intent(mActivity, BudgetActivity.class)); 
                 return true;
         }
         return false;

@@ -310,7 +310,7 @@ public class AddConsumptionActivity extends BaseMultiPaneActivity {
 	};
 
 	private void updateDisplayTime() {
-		string_time = mHour+":"+mMinute;
+		string_time = pad(mHour)+":"+pad(mMinute);
 		timeButton.setText(new StringBuilder().append(pad(mHour)).append(":")
 				.append(pad(mMinute)));
 	}
@@ -318,8 +318,8 @@ public class AddConsumptionActivity extends BaseMultiPaneActivity {
 	private void updateDisplayDate() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(mYear, mMonth, mDay,mHour,mMinute);
-		string_date = String.valueOf(pad(mMonth+1))+"-"+pad(mDay)+"-"+mYear;
-		dateButton.setText(String.format("  %tB %te %tY %tH:%02d", calendar,calendar,calendar,calendar,mMinute));
+		string_date = mYear+"-"+String.valueOf(pad(mMonth+1))+"-"+pad(mDay);
+		dateButton.setText(String.format("  %tB %te %tY ", calendar,calendar,calendar));
 	}
 
 	private static String pad(int c) {
@@ -383,9 +383,9 @@ public class AddConsumptionActivity extends BaseMultiPaneActivity {
 			String[] dateStrings = dateString.split(" ");
 
 			String[] datepiece = dateStrings[0].split("-");
-			mMonth = Integer.parseInt(datepiece[0]) - 1;
-			mDay = Integer.parseInt(datepiece[1]);
-			mYear = Integer.parseInt(datepiece[2]);
+			mMonth = Integer.parseInt(datepiece[1]) - 1;
+			mDay = Integer.parseInt(datepiece[2]);
+			mYear = Integer.parseInt(datepiece[0]);
 
 			String[] timepiece = dateStrings[1].split(":");
 			mHour = Integer.parseInt(timepiece[0]);
@@ -478,16 +478,16 @@ public class AddConsumptionActivity extends BaseMultiPaneActivity {
 				String budgetDateString = String.valueOf(pad(mMonth+1))+"-"+mYear;
 				Cursor budgetCursor = mDbHelper.fetchBudgetByTypeandDate(type, budgetDateString);
 				startManagingCursor(budgetCursor);
+				Log.d("add expense", "budgetCursor.getCount() ="+ budgetCursor.getCount());
 				budgetCursor.moveToFirst();
+				if(originType != type && mRowId!=null ){
+					mDbHelper.updateBudgetOut(originBudgetId, originOut);
+					Log.d("add expense", "save originOut = "+originOut);
+				}
 				if(budgetCursor.getCount()==1){
 					long budgetId = budgetCursor.getLong(budgetCursor.getColumnIndexOrThrow(MintDBHelper.KEY_ROWID));
 					float out = budgetCursor.getFloat(budgetCursor.getColumnIndexOrThrow(MintDBHelper.KEY_OUT));
 					Log.d("add expense", "save originType = "+originType+"     type="+type);
-					if(originType != type && mRowId!=null ){
-						mDbHelper.updateBudgetOut(originBudgetId, originOut);
-						Log.d("add expense", "save originOut = "+originOut);
-						out = originOut;
-					}
 					if(status == 0)
 						originOut = originOut - float_money ;
 					else originOut = originOut + float_money+out;

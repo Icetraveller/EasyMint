@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:background="#FFF5F5F5">
+  <include layout="@layout/actionbar"/>
+    <RelativeLayout 
+                android:layout_width="fill_parent" 
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="10dip"
+                >
+                <RelativeLayout android:layout_width="fill_parent" 
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dip"
+                android:background="@drawable/content_bg"
+                android:id="@+id/section1">
+                <TextView android:id="@+id/l_section1" 
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content"
+              android:text="@string/header_general"
+              android:layout_marginBottom="20dip"
+              style="@style/WordPressSectionHeader"/>
+  <RelativeLayout
+  android:id="@+id/report_button_bar"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_below="@id/l_section1"
+  >
+  	<RadioGroup
+  	android:id="@+id/report_radio_group"
+  	android:layout_centerHorizontal="true"
+  	android:layout_width="match_parent"
+  	android:layout_height="wrap_content"
+  	android:orientation="horizontal"
+  	>
+  		<RadioButton
+  		android:id="@+id/report_button_type"
+  		android:layout_width="wrap_content"
+  		android:layout_height="wrap_content"
+  		android:text="按类型统计"
+  		></RadioButton>
+  		
+  		<RadioButton
+  		android:id="@+id/report_button_date"
+  		android:layout_width="wrap_content"
+  		android:layout_height="wrap_content"
+  		android:text="按日期统计"
+  		></RadioButton>
+  		
+  	</RadioGroup>
+  </RelativeLayout>
+  </RelativeLayout>
+  <RelativeLayout android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                android:background="@drawable/content_bg"
+                android:layout_below="@id/section1"
+                android:layout_weight="1"
+                android:id="@+id/section2">
+                <TextView android:id="@+id/l_section2" 
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content"
+              android:text="@string/header_amount"
+              style="@style/WordPressSectionHeader"
+              android:layout_marginBottom="10dip"
+              />
+              <ListView
+  			android:id="@+id/list_report"
+  			android:layout_width="fill_parent"
+  			android:layout_height="fill_parent"
+  			android:layout_below="@id/l_section2"
+  			
+  			/>
+  
+  </RelativeLayout>
+  </RelativeLayout>
+</LinearLayout>

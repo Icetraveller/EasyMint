@@ -67,8 +67,8 @@ public class DashboardFragment extends Fragment {
         root.findViewById(R.id.home_btn_report).setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick(View view) {
-//                        Intent intent = new Intent(getActivity(), BlotterActivity.class);
-//                        startActivity(intent);
+                        Intent intent = new Intent(getActivity(), ReportActivity.class);
+                        startActivity(intent);
                     }
                 });
         

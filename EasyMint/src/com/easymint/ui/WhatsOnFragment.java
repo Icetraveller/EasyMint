@@ -84,7 +84,6 @@ public class WhatsOnFragment extends Fragment {
             view.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), BlotterActivity.class);
-                    intent.putExtra(BlotterActivity.START_SQL, MintDBHelper.KEY_CONSUMPTION_TYPE+"="+1);
                     startActivity(intent);
                 }
             });

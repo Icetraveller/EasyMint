@@ -333,14 +333,52 @@ private final NumberKeyListener keyListener = new NumberKeyListener() {
 		if(check_flag)
 		{
 			float budget=Float.parseFloat(money);
-			if (mRowId == null) {
-				long id = mDbHelper.createBudget(type,budget,out,string_time);
-				if (id > 0) {
-					mRowId = id;
+			float finalbudget;
+			Cursor existbudgetCursor;
+			Long existRowId;
+			if (mRowId == null) 
+			{
+				existbudgetCursor=mDbHelper.fetchBudgetByTypeandDate(type,string_time);
+				if(existbudgetCursor.getCount()>0)
+				{
+					existbudgetCursor.moveToFirst();
+					existRowId=existbudgetCursor.getLong(existbudgetCursor
+							.getColumnIndexOrThrow(MintDBHelper.KEY_ROWID));
+					finalbudget=budget+existbudgetCursor.getFloat(existbudgetCursor
+							.getColumnIndexOrThrow(MintDBHelper.KEY_BUDGET));
+					out=existbudgetCursor.getFloat(existbudgetCursor
+							.getColumnIndexOrThrow(MintDBHelper.KEY_OUT));
+					mDbHelper.updateBudget(existRowId,type,finalbudget,out,string_time);
 				}
-			} else {
-				mDbHelper.updateBudget(mRowId,type,budget,out,string_time);
 
+				else
+				{
+					long id = mDbHelper.createBudget(type,budget,out,string_time);
+					if (id > 0) 
+					{
+						mRowId = id;
+					}
+				}
+			}   //ÐÂ½¨
+			else
+			{
+				existbudgetCursor=mDbHelper.fetchBudgetByTypeandDate(type,string_time);
+				if(existbudgetCursor.getCount()>0)
+				{
+					existbudgetCursor.moveToFirst();
+					existRowId=existbudgetCursor.getLong(existbudgetCursor
+							.getColumnIndexOrThrow(MintDBHelper.KEY_ROWID));
+					finalbudget=budget+existbudgetCursor.getFloat(existbudgetCursor
+							.getColumnIndexOrThrow(MintDBHelper.KEY_BUDGET));
+					out=out+existbudgetCursor.getFloat(existbudgetCursor
+							.getColumnIndexOrThrow(MintDBHelper.KEY_OUT));
+					mDbHelper.updateBudget(existRowId,type,finalbudget,out,string_time);
+					mDbHelper.deleteBudget(mRowId);
+				}
+				else 
+				{
+					mDbHelper.updateBudget(mRowId,type,budget,out,string_time);
+				}
 			}
 		}
 		return check_flag;
