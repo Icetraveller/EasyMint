@@ -128,9 +128,43 @@ public class BlotterActivity extends BaseMultiPaneActivity{
 		listView.setAdapter(blotterAdapter);
 	}
 	 
-	 private boolean deleteConsumption(
-				long selectedItemID) {
-		 	Boolean success = false;
+	 private boolean deleteConsumption( long selectedItemID) {
+				Cursor cursor = mDbHelper.fetchConsumptionById(selectedItemID);
+			 	startManagingCursor(cursor);
+			 	cursor.moveToFirst();
+			 	int type = cursor.getInt(cursor.getColumnIndexOrThrow(MintDBHelper.KEY_CONSUMPTION_TYPE));
+			 	float price = cursor.getFloat(cursor.getColumnIndexOrThrow(MintDBHelper.KEY_PRICE));
+			 	int status  = cursor.getInt(cursor.getColumnIndexOrThrow(MintDBHelper.KEY_STATUS));
+			 	String dateString = cursor.getString(cursor.getColumnIndexOrThrow(MintDBHelper.KEY_DATE));
+			 	
+			 	String[] dateStrings = dateString.split(" ");
+				
+			 	int mYear;
+			    int mMonth;
+			 	
+				String[] datepiece = dateStrings[0].split("-");
+				mMonth=Integer.parseInt(datepiece[1])-1;
+				mYear=Integer.parseInt(datepiece[0]);
+				
+				String searchString = pad(mMonth+1)+"-"+mYear;
+				Log.d(TAG, "searchString : "+searchString);
+				Cursor budgetCursor = mDbHelper.fetchBudgetByTypeandDate(type, searchString);
+				startManagingCursor(budgetCursor);
+				if(budgetCursor.getCount()==1){
+					Log.d(TAG, "has budget");
+					budgetCursor.moveToFirst();
+					long budgetId = budgetCursor.getLong(budgetCursor.getColumnIndexOrThrow(MintDBHelper.KEY_ROWID));
+					float out =budgetCursor.getFloat(budgetCursor.getColumnIndexOrThrow(MintDBHelper.KEY_OUT));
+					if(status==0){
+						out = out + price;
+					}
+					if(status == 1){
+						out = out - price;
+					}
+					Log.d(TAG, "out="+out);
+					mDbHelper.updateBudgetOut(budgetId, out);
+				}
+			Boolean success = false;
 			success = mDbHelper.deleteConsumption(selectedItemID);
 			fillData();
 			return success;
