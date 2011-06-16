@@ -2,9 +2,7 @@ package com.easymint.ui;
 
 import java.util.Calendar;
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,12 +15,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
