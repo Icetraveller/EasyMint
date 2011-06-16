@@ -296,21 +296,22 @@ public class MintDBHelper {
     			null,
     			null,null);
     }
-    public Cursor fetchConsumptionSumByType(String groupBy){
+    public Cursor fetchConsumptionSumByType(String groupBy, int state){
     	return mDb.query(DATABASE_TABLE_CONSUMPTION,
     			new String[]{KEY_ROWID,
     			groupBy,
     			"sum(" + KEY_PRICE + ")" },
-    			KEY_STATUS +"= 1",null,
+    			KEY_STATUS + " = " + "'" + state + "'"
+    			,null,
     			groupBy,
     			null,null);
     }
-    public Cursor fetchConsumptionSumByDate(String from,String to){
+    public Cursor fetchConsumptionSumByDate(String from,String to,int state){
     	return mDb.query(DATABASE_TABLE_CONSUMPTION,
     			new String[]{KEY_ROWID,
     			KEY_DATE,
     			"sum(" + KEY_PRICE + ")" },
-    			KEY_DATE + " between " + "'" + from +"'" + " and " + "'" + to + "' and " +KEY_STATUS +"= 1",
+    			KEY_DATE + " between " + "'" + from +"'" + " and " + "'" + to + "'" + " and " + KEY_STATUS + " = " + "'" + state + "'",
     			null,
     			null,
     			null,
