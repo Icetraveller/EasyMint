@@ -279,6 +279,8 @@ public class MintDBHelper {
     			KEY_CONSUMPTION_TYPE,KEY_BUDGET,KEY_OUT,KEY_CYCLE}, KEY_ROWID+"="+id, null, null, null, null);
     }
     
+    
+    
     public Cursor fetchBudgetByTypeandDate(int consumptionType, String dateString){
     	
     	return mDb.query(DATABASE_TABLE_BUDGET, new String[] {KEY_ROWID,
@@ -296,33 +298,22 @@ public class MintDBHelper {
     			null,
     			null,null);
     }
-    public Cursor fetchConsumptionSumByType(String groupBy){
+    public Cursor fetchConsumptionSumByType(String groupBy, int state){
     	return mDb.query(DATABASE_TABLE_CONSUMPTION,
     			new String[]{KEY_ROWID,
     			groupBy,
     			"sum(" + KEY_PRICE + ")" },
-    			KEY_STATUS +"= 1",null,
+    			KEY_STATUS + " = " + "'" + state + "'"
+    			,null,
     			groupBy,
     			null,null);
     }
-    public Cursor fetchConsumptionSumByDate(String from,String to){
+    public Cursor fetchConsumptionSumByDate(String from,String to,int state){
     	return mDb.query(DATABASE_TABLE_CONSUMPTION,
     			new String[]{KEY_ROWID,
     			KEY_DATE,
     			"sum(" + KEY_PRICE + ")" },
-    			KEY_DATE + " between " + "'" + from +"'" + " and " + "'" + to + "' and " +KEY_STATUS +"= 1",
-    			null,
-    			null,
-    			null,
-    			null);
-    }
-    
-    public Cursor fetchConsumptionSumByDateAndTypeAndStatus(String from,String to,int type, int status){
-    	return mDb.query(DATABASE_TABLE_CONSUMPTION,
-    			new String[]{KEY_ROWID,
-    			KEY_DATE,
-    			"sum(" + KEY_PRICE + ")" },
-    			KEY_DATE + " between " + "'" + from +"'" + " and " + "'" + to + "' and " +KEY_STATUS +"= "+status +" and "+KEY_CONSUMPTION_TYPE+"="+type,
+    			KEY_DATE + " between " + "'" + from +"'" + " and " + "'" + to + "'" + " and " + KEY_STATUS + " = " + "'" + state + "'",
     			null,
     			null,
     			null,

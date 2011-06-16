@@ -8,7 +8,6 @@ import com.easymint.ui.widget.DateSlider;
 import com.easymint.ui.widget.MonthYearDateSlider;
 
 
-
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.database.Cursor;
@@ -354,40 +353,13 @@ private final NumberKeyListener keyListener = new NumberKeyListener() {
 
 				else
 				{
-					//consider has already had some expense
-					
-					Calendar calendar = Calendar.getInstance();
-					calendar.set(mYear, mMonth, 1);
-					String from = mYear+"-"+pad(mMonth+1)+"-01 00:00";
-					calendar.add(Calendar.MONTH, 1);
-					calendar.add(Calendar.DAY_OF_MONTH, -1);
-					String to = mYear+"-"+pad(mMonth+1)+"-"+calendar.get(Calendar.DAY_OF_MONTH)+" 23:59";
-					
-					float outSum = 0;
-					
-					Cursor expenseCursor = mDbHelper.fetchConsumptionSumByDateAndTypeAndStatus(from, to,type,1);
-					startManagingCursor(expenseCursor);
-					if(expenseCursor.getCount()>0){
-						expenseCursor.moveToFirst();
-						outSum += expenseCursor.getFloat(2);
-					}
-					
-					Cursor incomeCursor = mDbHelper.fetchConsumptionSumByDateAndTypeAndStatus(from, to,type,0);
-					startManagingCursor(incomeCursor);
-					if(incomeCursor.getCount()>0){
-						incomeCursor.moveToFirst();
-						outSum =outSum - incomeCursor.getFloat(2);
-					}
-					
-					out = out+outSum;
-					
 					long id = mDbHelper.createBudget(type,budget,out,string_time);
 					if (id > 0) 
 					{
 						mRowId = id;
 					}
 				}
-			}   
+			}   //ÐÂ½¨
 			else
 			{
 				existbudgetCursor=mDbHelper.fetchBudgetByTypeandDate(type,string_time);

@@ -1,10 +1,12 @@
 package com.easymint.ui;
 
-
+/**
+ * author:wangyujie
+ * version:1.0
+ */
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Currency;
-import java.util.HashMap;
 import java.util.Locale;
 
 import android.content.Context;
@@ -12,7 +14,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,6 @@ import android.widget.TextView;
 
 import com.easymint.R;
 import com.easymint.provider.MintDBHelper;
-import com.easymint.util.ActivityHelper;
 
 public class ReportActivity extends BaseMultiPaneActivity {
 
@@ -36,6 +36,8 @@ public class ReportActivity extends BaseMultiPaneActivity {
 	 * 分类统计
 	 * */
 	private MintDBHelper mDbHelper;
+	private final int consumptionOut = 1;
+	private final int consumptionIn = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +62,14 @@ public class ReportActivity extends BaseMultiPaneActivity {
 		 super.onDestroy();
 	 }
 	
-	private Object [] readDataFromCursor(Cursor c ,String date){
-		c.moveToFirst();
-		Object [] data = new Object[3];
-		data[0] = c.getInt(0);
+	private Object [] readDataFromCursor(Cursor in ,Cursor out ,String date){
+		in.moveToFirst();
+		Object [] data = new Object[4];
+		data[0] = in.getInt(0);
 		data[1] = date;
-		data[2] = c.getFloat(2);
+		data[2] = in.getFloat(2);
+		out.moveToFirst();
+		data[3]	= out.getFloat(2);
 		return data;
 	}
 	private void fillSumByDate(){
@@ -93,12 +97,12 @@ public class ReportActivity extends BaseMultiPaneActivity {
 		cal.add(Calendar.MONTH, 6);
 		
 		
-		Log.d("report","yesterday "+yesterday);
-		Log.d("report","today "+today);
-		Log.d("report","week " + week);
-		Log.d("report","month " + month);
-		Log.d("report","three month " + threeMonth);
-		Log.d("report","six month " + sixMonth);
+//		Log.d("report","yesterday "+yesterday);
+//		Log.d("report","today "+today);
+//		Log.d("report","week " + week);
+//		Log.d("report","month " + month);
+//		Log.d("report","three month " + threeMonth);
+//		Log.d("report","six month " + sixMonth);
 	
 		
 		Cursor sumCursor = mDbHelper.fetchConsumptionSum();
@@ -106,38 +110,50 @@ public class ReportActivity extends BaseMultiPaneActivity {
 		sumCursor.moveToFirst();
 		float sum = sumCursor.getFloat(1);
 
-		String cols[] = new String [] {MintDBHelper.KEY_ROWID,MintDBHelper.KEY_DATE,"sum(" + MintDBHelper.KEY_PRICE + ")"};
+		String cols[] = new String [] {MintDBHelper.KEY_ROWID,MintDBHelper.KEY_DATE,"IN" , "OUT"};
 		MatrixCursor cursor = new MatrixCursor(cols);
 		
 		//today
-		Cursor cToday = mDbHelper.fetchConsumptionSumByDate(today + startOfDay,today + endOfDay);
-		this.startManagingCursor(cToday);
-		cursor.addRow(readDataFromCursor(cToday, "今天"));
+		Cursor TodayIn = mDbHelper.fetchConsumptionSumByDate(today + startOfDay, today + endOfDay, consumptionIn);
+		Cursor TodayOut = mDbHelper.fetchConsumptionSumByDate(today + startOfDay, today + endOfDay, consumptionOut);
+		this.startManagingCursor(TodayIn);
+		this.startManagingCursor(TodayOut);
+		cursor.addRow(readDataFromCursor(TodayIn, TodayOut, "今天"));
 		
 		//yesterday
-		Cursor cYesterday = mDbHelper.fetchConsumptionSumByDate(yesterday + startOfDay, yesterday + endOfDay);
-		this.startManagingCursor(cYesterday);
-		cursor.addRow(readDataFromCursor(cYesterday, "昨天"));
+		Cursor YesterdayIn = mDbHelper.fetchConsumptionSumByDate(yesterday + startOfDay, yesterday + endOfDay, consumptionIn);
+		Cursor YesterdayOut = mDbHelper.fetchConsumptionSumByDate(yesterday + startOfDay, yesterday + endOfDay, consumptionOut);
+		this.startManagingCursor(YesterdayIn);
+		this.startManagingCursor(YesterdayOut);
+		cursor.addRow(readDataFromCursor(YesterdayIn, YesterdayOut, "昨天"));
 		
 		//week
-		Cursor cWeek = mDbHelper.fetchConsumptionSumByDate(week + startOfDay, today + endOfDay);
-		this.startManagingCursor(cWeek);
-		cursor.addRow(readDataFromCursor(cWeek, "这周"));
+		Cursor weekIn = mDbHelper.fetchConsumptionSumByDate(week + startOfDay, today + endOfDay, consumptionIn);
+		Cursor weekOut = mDbHelper.fetchConsumptionSumByDate(week + startOfDay, today + endOfDay, consumptionOut);
+		this.startManagingCursor(weekIn);
+		this.startManagingCursor(weekOut);
+		cursor.addRow(readDataFromCursor(weekIn, weekOut, "上周"));
 		
 		//month
-		Cursor cMonth = mDbHelper.fetchConsumptionSumByDate(month + startOfDay,today + endOfDay);
-		this.startManagingCursor(cMonth);
-		cursor.addRow(readDataFromCursor(cMonth, "这个月"));
-		
+		Cursor monthIn = mDbHelper.fetchConsumptionSumByDate(month + startOfDay, today + endOfDay, consumptionIn);
+		Cursor monthOut = mDbHelper.fetchConsumptionSumByDate(month + startOfDay, today + endOfDay, consumptionOut);
+		this.startManagingCursor(monthIn);
+		this.startManagingCursor(monthOut);
+		cursor.addRow(readDataFromCursor(monthIn, monthOut, "上个月内"));
+
 		//threeMonth
-		Cursor cThreeMonth = mDbHelper.fetchConsumptionSumByDate(threeMonth + startOfDay,today + endOfDay);
-		this.startManagingCursor(cThreeMonth);
-		cursor.addRow(readDataFromCursor(cThreeMonth, "最近三个月"));
-		
+		Cursor threeMonthIn = mDbHelper.fetchConsumptionSumByDate(threeMonth+ startOfDay, today + endOfDay, consumptionIn);
+		Cursor threeMonthOut = mDbHelper.fetchConsumptionSumByDate(threeMonth + startOfDay, today + endOfDay, consumptionOut);
+		this.startManagingCursor(threeMonthIn);
+		this.startManagingCursor(threeMonthOut);
+		cursor.addRow(readDataFromCursor(threeMonthIn, threeMonthOut, "三个月内"));
+
 		//sixMonth
-		Cursor cSixMonth = mDbHelper.fetchConsumptionSumByDate(sixMonth + startOfDay,today + endOfDay);
-		this.startManagingCursor(cSixMonth);
-		cursor.addRow(readDataFromCursor(cSixMonth, "半年"));
+		Cursor sixMonthIn = mDbHelper.fetchConsumptionSumByDate(sixMonth + startOfDay, today + endOfDay, consumptionIn);
+		Cursor sixMonthOut = mDbHelper.fetchConsumptionSumByDate(sixMonth + startOfDay, today + endOfDay, consumptionOut);
+		this.startManagingCursor(sixMonthIn);
+		this.startManagingCursor(sixMonthOut);
+		cursor.addRow(readDataFromCursor(sixMonthIn, sixMonthOut, "半年内"));
 		
 		
 		ReportAdapter rAdapter = new ReportAdapter(this, cursor);
@@ -171,7 +187,7 @@ public class ReportActivity extends BaseMultiPaneActivity {
 					break;
 				case 1:
 					cal.add(Calendar.DATE, -1);
-					to=dFormat.format(cal.getTime()) + endOfDay;
+					to = dFormat.format(cal.getTime()) + endOfDay;
 					break;
 				case 2:
 					cal.add(Calendar.WEEK_OF_MONTH, -1);
@@ -205,13 +221,55 @@ public class ReportActivity extends BaseMultiPaneActivity {
 	
 	private void fillSum(String groupBy){
 		
-		Cursor cursor = mDbHelper.fetchConsumptionSumByType(groupBy);
-		this.startManagingCursor(cursor);
+		Cursor cursorIn = mDbHelper.fetchConsumptionSumByType(groupBy,consumptionIn);
+		this.startManagingCursor(cursorIn);
+		Cursor cursorOut = mDbHelper.fetchConsumptionSumByType(groupBy,consumptionOut);
+		this.startManagingCursor(cursorOut);
 		
 		Cursor sumCursor = mDbHelper.fetchConsumptionSum();
 		this.startManagingCursor(sumCursor);
 		sumCursor.moveToFirst();
 		float sum = sumCursor.getFloat(1);
+		
+		String cols[] = new String [] {MintDBHelper.KEY_ROWID,MintDBHelper.KEY_CONSUMPTION_TYPE,"IN" , "OUT"};
+		MatrixCursor cursor = new MatrixCursor(cols);
+		
+		boolean outFlag [] = new boolean [cursorOut.getCount()] ;
+		for(int i = 0; i < outFlag.length ; i++){
+			outFlag [i] = false;
+		}
+		cursorIn.moveToFirst();
+		while(!cursorIn.isAfterLast() ){
+			Object data [] = new Object [4];
+			data[0] = cursorIn.getInt(0);
+			data[1] = cursorIn.getInt(1);
+			data[2] = cursorIn.getFloat(2);
+			data[3] = 0.0 ;
+			
+			cursorOut.moveToFirst();
+			for( int i = 0; i < cursorOut.getCount(); i ++){
+				if(cursorIn.getInt(1) == cursorOut.getInt(1)){
+					data[3] = cursorOut.getFloat(2);
+					outFlag[cursorOut.getPosition()] = true;
+				}
+				cursorOut.moveToNext();
+			}
+			
+			cursor.addRow(data);
+			cursorIn.moveToNext();
+		}
+		for( int i = 0; i < outFlag.length ; i ++){
+			if(outFlag[i] == false){
+				cursorOut.moveToPosition(i);
+				Object outData [] = new Object [4];
+				outData[0] = cursorOut.getInt(0);
+				outData[1] = cursorOut.getInt(1);
+				outData[2] = 0.0;
+				outData[3] = cursorOut.getFloat(2);
+				
+				cursor.addRow(outData);
+			}
+		}
 		
 		ReportAdapter rAdapter = new ReportAdapter(this, cursor);
 		ListView sumView = (ListView) findViewById(R.id.list_report);
@@ -229,7 +287,7 @@ public class ReportActivity extends BaseMultiPaneActivity {
 				Intent intent = new Intent();
 				Bundle bundle = new Bundle();
 				
-				TextView typeView = (TextView) arg1.findViewById(R.id.sum_item_groupby);
+				TextView typeView = (TextView) arg1.findViewById(R.id.report_item_groupby);
 				//type为int型，此处返回string
 				String [] keys = getResources().getStringArray(R.array.account_type_array);
 				String typeString = null;
@@ -250,13 +308,17 @@ public class ReportActivity extends BaseMultiPaneActivity {
 			}
 		});
 	}
-	
+	//for test used
 	public void fillDB(){
 		 mDbHelper.createConsumption("Title", 12, 1, "2011-06-08 13:13", 1, "", 1);
-		 mDbHelper.createConsumption("Title2", 12, 1, "2011-06-08 13:13", 1, "", 0);
+		 mDbHelper.createConsumption("Title2", 12, 1, "2011-06-09 13:13", 1, "", 0);
 		 mDbHelper.createConsumption("Title3", 12, 2, "2011-06-15 13:13", 1, "", 0);
-		 mDbHelper.createConsumption("Title4", 12, 2, "2011-06-14 13:13", 1, "", 0);
-		 mDbHelper.createConsumption("Title5", 12, 2, "2011-06-13 13:13", 1, "", 0);
+		 mDbHelper.createConsumption("Title4", 12, 2, "2011-06-14 13:13", 1, "", 1);
+		 mDbHelper.createConsumption("Title5", 12, 3, "2011-06-13 13:13", 1, "", 0);
+		 mDbHelper.createConsumption("Title5", 12, 3, "2011-06-11 13:13", 1, "", 0);
+		 mDbHelper.createConsumption("Title5", 12, 4, "2011-06-13 13:13", 1, "", 1);
+		 mDbHelper.createConsumption("Title5", 12, 4, "2011-06-14 13:13", 1, "", 1);
+		 
 	 }
 	
 	private void selectRadioButton(){
@@ -283,7 +345,8 @@ public class ReportActivity extends BaseMultiPaneActivity {
 		
 		private float consumptionSum = 0;
 		
-		public ReportAdapter(Context context, Cursor c) {
+		
+		public ReportAdapter(Context context, Cursor c ) {
 			super(context, c);
 			// TODO Auto-generated constructor stub
 			mInflater = LayoutInflater.from(context);
@@ -292,10 +355,11 @@ public class ReportActivity extends BaseMultiPaneActivity {
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
 			// TODO Auto-generated method stub
-			TextView groupBy = (TextView) view.findViewById(R.id.sum_item_groupby);
-			TextView rectangle = (TextView) view.findViewById(R.id.report_rectangle);
-			TextView sum = (TextView) view.findViewById(R.id.sum_item_sum);
-			
+			TextView groupBy = (TextView) view.findViewById(R.id.report_item_groupby);
+			TextView rectangleIn = (TextView) view.findViewById(R.id.report_rectangle_in);
+			TextView sumIn = (TextView) view.findViewById(R.id.report_item_in_sum);
+			TextView rectangleOut = (TextView) view.findViewById(R.id.report_rectangle_out);
+			TextView sumOut = (TextView) view.findViewById(R.id.report_item_out_sum);
 			if(cursor.getColumnName(1).equals(MintDBHelper.KEY_CONSUMPTION_TYPE)){
 				int i = cursor.getInt(1);
 				String [] array = getResources().getStringArray(R.array.account_type_array);
@@ -304,14 +368,27 @@ public class ReportActivity extends BaseMultiPaneActivity {
 			else if(cursor.getColumnName(1).equals(MintDBHelper.KEY_DATE)){
 				String date = cursor.getString(1);
 				groupBy.setText(date);
+
 			}
-			float price = cursor.getFloat(2);
+			float priceIn = cursor.getFloat(2);
+			float priceOut = cursor.getFloat(3);
 			int parentWidth = getWindowManager().getDefaultDisplay().getWidth();
-			int width =(int) (( price / getRectangle() ) * 0.7 * parentWidth);
+			int widthIn =(int) (( priceIn / getRectangle() ) * 0.7 * parentWidth);
+			int widthOut = (int ) ( ( priceOut / getRectangle() ) * 0.7 * parentWidth);
 			
-			rectangle.setWidth(width);
-			rectangle.setVisibility(View.VISIBLE);
-			sum.setText(""+price + Currency.getInstance("CNY").getSymbol(Locale.CHINA));
+			if (priceIn == 0) {
+				rectangleIn.setVisibility(View.GONE);
+				sumIn.setVisibility(View.GONE);
+			}
+			if (priceOut == 0) {
+				rectangleOut.setVisibility(View.GONE);
+				sumOut.setVisibility(View.GONE);
+			}
+			rectangleIn.setWidth(widthIn);
+			rectangleOut.setWidth(widthOut);
+			
+			sumIn.setText(""+priceIn + Currency.getInstance("CNY").getSymbol(Locale.CHINA));
+			sumOut.setText(""+priceOut + Currency.getInstance("CNY").getSymbol(Locale.CHINA));
 			
 		}
 
